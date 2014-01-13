@@ -4,8 +4,10 @@ define([
   'backbone',
   'utilities',
   'text!registration_template',
-  'modal_component'
-], function ($, _, Backbone, utils, RegistrationTemplate, ModalComponent) {
+  'modal_component',
+  'async',
+  'tag_show_view'
+], function ($, _, Backbone, utils, RegistrationTemplate, ModalComponent, async, TagShowView) {
 
   var RegistrationView = Backbone.View.extend({
 
@@ -20,7 +22,68 @@ define([
     render: function () {
       var template = _.template(RegistrationTemplate);
       this.$el.html(template);
+	  this.initializeSelect2();
       return this;
+    },
+	
+    initializeSelect2: function () {
+      var self = this;
+      var formatResult = function (object, container, query) {
+        return object.name;
+      };
+
+      var modelJson = this.model.toJSON();
+      $("#company").select2({
+        placeholder: 'Select an OpDiv',
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        minimumInputLength: 2,
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'agency',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data };
+          }
+        }
+      });
+      if (modelJson.agency) {
+        $("#company").select2('data', modelJson.agency.tag);
+      }
+      $("#company").on('change', function (e) {
+        self.model.trigger("profile:input:changed", e);
+      });
+      $("#location").select2({
+        placeholder: 'Select a Location',
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        minimumInputLength: 1,
+        data: [ location ],
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'location',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data };
+          }
+        }
+      });
+      if (modelJson.location) {
+        $("#location").select2('data', modelJson.location.tag);
+      }
+      $("#location").on('change', function (e) {
+        self.model.trigger("profile:input:changed", e);
+      });
     },
 
     submit: function (e) {
