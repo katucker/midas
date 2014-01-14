@@ -27,8 +27,34 @@ define([
       this.options = options;
       this.initializeView();
 	  this.initializeTags();
+	  this.initializeSelect2();
     },
 
+    showRegister: function (e) {
+      if (e.preventDefault) e.preventDefault();
+
+      if (this.loginView) this.loginView.cleanup();
+      if (this.modalComponent) this.modalComponent.cleanup();
+	  this.initializeTags();
+	  this.initializeSelect2();
+
+      this.modalComponent = new ModalComponent({
+        el: "#container",
+        id: "login-register",
+        modalTitle: "Register",
+		model: this.model,
+		data: this.data
+      }).render();
+
+      this.loginView = new RegistrationView({
+        el: ".modal-template",
+		model: this.model,
+		data: this.data,		      
+        message: this.options.message
+      }).render();
+	 
+    },
+	
     initializeView: function () {
       var self = this;
       if (this.loginView) {
@@ -73,53 +99,64 @@ define([
       });
       this.tagView.render();
     },
+	
+    initializeSelect2: function () {
+      var self = this;
+      var formatResult = function (object, container, query) {
+        return object.name;
+      };
 
-    showRegister: function (e) {
-      if (e.preventDefault) e.preventDefault();
-
-      if (this.loginView) this.loginView.cleanup();
-      if (this.modalComponent) this.modalComponent.cleanup();
-
-      this.modalComponent = new ModalComponent({
-        el: "#container",
-        id: "login-register",
-        modalTitle: "Register"
-      }).render();
-
-      this.loginView = new RegistrationView({
-        el: ".modal-template",
-		model: this.model,
-		data: this.data,		      
-        message: this.options.message
-      }).render();
-	 
-    },
-
-    search: function () {
-      $(".comment-content").midasAutocomplete({
-        backboneEvents: true,
-        // If we are using backbone here, then a lot of these
-        // misc. AJAX options we are passing are unecessary.  So we should somehow
-        // manage that in an elegant way.
-        backbone: false,
-        apiEndpoint: '/api/ac/inline',
-        // the query param expects one api endpoint IE:
-        // /nested/endpoint?QUERYPARAM=$(".search").val()
-        // So it is not something that you can chain params onto.
-        // It expects you to send the data back as input data through that query param
-        // one character at a time.
-        queryParam: 'q',
-        type: 'POST',
-        contentType: 'json',
-
-        // The plugin will accept any trigger key'd in here, and then
-        // use that to start the search process.  if it doesn't exist it will not search.
-        trigger: "@",
-        searchResultsClass: ".search-result-wrapper",
-
-        success: function (data) {
-
+      var modelJson = this.model.toJSON();
+      $("#company").select2({
+        placeholder: 'Select an Agency',
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        minimumInputLength: 2,
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'agency',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data };
+          }
         }
+      });
+      if (modelJson.agency) {
+        $("#company").select2('data', modelJson.agency.tag);
+      }
+      $("#company").on('change', function (e) {
+        self.model.trigger("profile:input:changed", e);
+      });
+      $("#location").select2({
+        placeholder: 'Select a Location',
+        formatResult: formatResult,
+        formatSelection: formatResult,
+        minimumInputLength: 1,
+        data: [ location ],
+        ajax: {
+          url: '/api/ac/tag',
+          dataType: 'json',
+          data: function (term) {
+            return {
+              type: 'location',
+              q: term
+            };
+          },
+          results: function (data) {
+            return { results: data };
+          }
+        }
+      });
+      if (modelJson.location) {
+        $("#location").select2('data', modelJson.location.tag);
+      }
+      $("#location").on('change', function (e) {
+        self.model.trigger("profile:input:changed", e);
       });
     },
 
