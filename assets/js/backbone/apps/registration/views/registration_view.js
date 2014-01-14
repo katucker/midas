@@ -6,8 +6,9 @@ define([
   'text!registration_template',
   'modal_component',
   'async',
-  'tag_show_view'
-], function ($, _, Backbone, utils, RegistrationTemplate, ModalComponent, async, TagShowView) {
+  'tag_show_view',
+  'profile_model',
+], function ($, _, Backbone, utils, RegistrationTemplate, ModalComponent, async, TagShowView, ProfileModel) {
 
   var RegistrationView = Backbone.View.extend({
 
@@ -17,6 +18,7 @@ define([
 
     initialize: function (options) {
       this.options = options;
+	  this.model = new ProfileModel();
     },
 
     render: function () {
