@@ -9,8 +9,9 @@ define([
   'login_config',
   'modal_component',
   'registration_view',
-  'profile_model'
-], function ($, _, Backbone, Bootstrap, utils, BaseController, LoginView, Login, ModalComponent, RegistrationView, ProfileModel) {
+  'profile_model',
+  'text!alert_template'
+], function ($, _, Backbone, Bootstrap, utils, BaseController, LoginView, Login, ModalComponent, RegistrationView, ProfileModel, AlertTemplate) {
 
   Application.Login = BaseController.extend({
 
@@ -80,8 +81,51 @@ define([
 
     initializeProfileModelInstance: function () {
       var self = this;
+
+      if (this.model) this.model.remove();
       this.model = new ProfileModel();
-      var modelJson = this.model.toJSON();
+      var fetchId = 1;
+      if (this.id && this.id != 'edit') { fetchId = this.id; }
+      this.model.trigger("profile:fetch", fetchId);
+      // process a successful model fetch, and display the model
+      this.listenTo(this.model, "profile:fetch:success", function (model) {
+        // @instance
+        self.model = model;
+        var modelJson = model.toJSON();
+        for (i in modelJson.tags) {
+          if (modelJson.tags[i].tag.type == 'agency') {
+            self.model.agency = modelJson.tags[i].tag;
+            self.model.agency['tagId'] = modelJson.tags[i].id;
+          }
+          else if (modelJson.tags[i].tag.type == 'location') {
+            self.model.location = modelJson.tags[i].tag;
+            self.model.location['tagId'] = modelJson.tags[i].id;
+          }
+        }
+        self.initializeProfileViewInstance();
+      });
+      // if the profile fetch fails, check if it is due to the user
+      // not being logged in
+      this.listenTo(this.model, "profile:fetch:error", function (model, response) {
+        // if the user isn't logged in, trigger the login window
+        if (response.status === 403) {
+          window.cache.userEvents.trigger("user:request:login", "You must be logged in to view profiles");
+        }
+        var data = {
+          alert: {
+            message: "<strong>Unable to load profile.  Please reload this page to try again.</strong><br/>Error: "
+          }
+        };
+        // check if the response provided an error
+        if (response.responseText) {
+          var err = JSON.parse(response.responseText);
+          if (err.message) {
+            data.alert.message += err.message;
+          }
+        }
+        var template = _.template(AlertTemplate, data)
+        this.$el.html(template);
+      });
     },
 
     // ---------------------

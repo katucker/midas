@@ -102,7 +102,13 @@ define([
         // Set the user object and trigger the user login event
         window.cache.currentUser = success;
         window.cache.userEvents.trigger("user:login", success);
-		window.location.href = sails.config['httpProtocol'] + '://' + sails.config['hostName']  + "/profile/:id"
+        var profileData = {
+          name: this.$("#name").val(),
+          agency: this.$("#agency").val(),
+          location: this.$("#location").val()
+        };
+        this.model.trigger("profile:save", profileData);
+		Backbone.history.navigate('profile/edit', { trigger: true });
       }).fail(function (error) {
         var d = JSON.parse(error.responseText);
         self.$("#registration-error").html(d.message);

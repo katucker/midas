@@ -61,9 +61,11 @@ define([
           target: 'projects',
           data: this.data
         });
+		this.homeView.remove();
     },
 
     listProjects: function () {
+	  this.homeView = new HomeView();
       this.cleanupChildren();
       this.browseListController = new BrowseListController({
         target: 'projects',
@@ -72,6 +74,7 @@ define([
     },
 
     listTasks: function () {
+	  this.homeView = new HomeView();
       this.cleanupChildren();
       this.browseListController = new BrowseListController({
         target: 'tasks',
