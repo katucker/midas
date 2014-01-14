@@ -115,8 +115,10 @@ define([
       $.ajax({
         url: '/api/auth/local',
         type: 'POST',
-        data: data
+        data: data,
+		this.model.trigger("profile:save", data)
       }).done(function (success) {
+		  
         // Set the user object and trigger the user login event
         window.cache.currentUser = success;
         window.cache.userEvents.trigger("user:login", success);
