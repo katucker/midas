@@ -103,7 +103,7 @@ define([
     },
 	
 	activate: function() {
-		$('#register-button').disabled(false);
+	  $("#register-button").removeAttr("disabled");
 	},
 
     submit: function (e) {
