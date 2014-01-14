@@ -120,7 +120,7 @@ define([
         // Set the user object and trigger the user login event
         window.cache.currentUser = success;
         window.cache.userEvents.trigger("user:login", success);
-		Backbone.history.navigate('profile/:id', { trigger: true });
+		Backbone.history.navigate('profile/edit', { trigger: true });
       }).fail(function (error) {
         var d = JSON.parse(error.responseText);
         self.$("#registration-error").html(d.message);
