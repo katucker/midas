@@ -65,7 +65,7 @@ define([
       this.modalComponent = new ModalComponent({
         el: this.el,
         id: "login",
-        modalTitle: "Login or Register"
+        modalTitle: "HHS FairTrade Beta"
       }).render();
 
       this.loginView = new LoginView({
