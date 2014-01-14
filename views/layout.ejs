@@ -56,7 +56,8 @@
   <body>
     <div class="navigation">
     </div>
-	<% if (window.location.href == sails.config['httpProtocol'] + '://' + sails.config['hostName']  + ":1337/") { %>
+	
+	<% if (Backbone.history.fragment == "") { %>
 	<div id="home">	
 	</div>
 	<% } else {}; %>
