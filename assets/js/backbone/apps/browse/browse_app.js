@@ -56,19 +56,19 @@ define([
     },
 
     showHome: function () {
+		this.cleanupChildren();
         this.homeView = new HomeView({
           el: '#home'
         }).render();
         this.browseListController = new BrowseListController({
-		  el: '#home'
-        });	
-        this.browseListController = new BrowseListController({
+		  el: '#home',
           target: 'projects',
           data: this.data
         });
     },
 	
 	showAbout: function () {
+		this.cleanupChildren();
         this.aboutView = new AboutView({
           el: '#home'
         }).render();
