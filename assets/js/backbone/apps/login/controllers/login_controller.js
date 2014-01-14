@@ -8,8 +8,9 @@ define([
   'login_view',
   'login_config',
   'modal_component',
-  'registration_view'
-], function ($, _, Backbone, Bootstrap, utils, BaseController, LoginView, Login, ModalComponent, RegistrationView) {
+  'registration_view',
+  'profile_model'
+], function ($, _, Backbone, Bootstrap, utils, BaseController, LoginView, Login, ModalComponent, RegistrationView, ProfileModel) {
 
   Application.Login = BaseController.extend({
 
@@ -66,14 +67,33 @@ define([
       this.modalComponent = new ModalComponent({
         el: "#container",
         id: "login-register",
-        modalTitle: "REGISTER FINALLY! From Login Controller!!!"
+        modalTitle: "Register"
       }).render();
 
       this.loginView = new RegistrationView({
         el: ".modal-template",
         message: this.options.message
       }).render();
+	  this.initializeProfileModelInstance();
 
+    },
+
+    initializeProfileModelInstance: function () {
+      var self = this;
+
+      if (this.model) this.model.remove();
+      this.model = new ProfileModel();
+        var modelJson = this.model.toJSON();
+        for (i in modelJson.tags) {
+          if (modelJson.tags[i].tag.type == 'agency') {
+            self.model.agency = modelJson.tags[i].tag;
+            self.model.agency['tagId'] = modelJson.tags[i].id;
+          }
+          else if (modelJson.tags[i].tag.type == 'location') {
+            self.model.location = modelJson.tags[i].tag;
+            self.model.location['tagId'] = modelJson.tags[i].id;
+          }
+        }
     },
 
     // ---------------------
