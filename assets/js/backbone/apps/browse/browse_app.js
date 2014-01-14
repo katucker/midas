@@ -71,10 +71,7 @@ define([
 		this.cleanupChildren();
         this.aboutView = new AboutView({
           el: '#home'
-        }).render();
-        this.browseListController = new BrowseListController({
-		  el: '#home'
-        });		
+        }).render();	
 	},
 	
 
