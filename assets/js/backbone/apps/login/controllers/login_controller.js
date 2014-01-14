@@ -90,8 +90,7 @@ define([
         el: ".modal-template",
 		model: this.model,
 		data: this.data,		      
-        message: this.options.message,
-		this.initializeProfileModelInstance();
+        message: this.options.message
       }).render();
 	 
     },
