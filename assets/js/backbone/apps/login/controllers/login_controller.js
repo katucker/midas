@@ -10,19 +10,23 @@ define([
   'modal_component',
   'registration_view',
   'profile_model',
-  'text!alert_template'
-], function ($, _, Backbone, Bootstrap, utils, BaseController, LoginView, Login, ModalComponent, RegistrationView, ProfileModel, AlertTemplate) {
+  'text!alert_template',
+  'autocomplete',
+  'tag_show_view'
+], function ($, _, Backbone, Bootstrap, utils, BaseController, LoginView, Login, ModalComponent, RegistrationView, ProfileModel, AlertTemplate, autocomplete, TagShowView) {
 
   Application.Login = BaseController.extend({
-
+    model: null,
     events: {
-      "click .login-register"    : "showRegister"
+      "click .login-register"    : "showRegister",
+	  "keyup .comment-content"          : "search"
     },
 
     initialize: function ( options ) {
       var self = this;
       this.options = options;
       this.initializeView();
+	  this.initializeTags();
     },
 
     initializeView: function () {
@@ -57,7 +61,18 @@ define([
         }).modal('hide');
       });
     },
-
+	
+    initializeTags: function() {
+      if (this.tagView) { this.tagView.cleanup(); }
+      this.tagView = new TagShowView({
+        model: this.model,
+        el: '.tag-wrapper',
+        target: 'profile',
+        edit: this.edit,
+        url: '/api/tag/findAllByUserId/'
+      });
+      this.tagView.render();
+    },
 
     showRegister: function (e) {
       if (e.preventDefault) e.preventDefault();
@@ -79,52 +94,31 @@ define([
 	  this.model = new ProfileModel();
     },
 
-    initializeProfileModelInstance: function () {
-      var self = this;
+    search: function () {
+      $(".comment-content").midasAutocomplete({
+        backboneEvents: true,
+        // If we are using backbone here, then a lot of these
+        // misc. AJAX options we are passing are unecessary.  So we should somehow
+        // manage that in an elegant way.
+        backbone: false,
+        apiEndpoint: '/api/ac/inline',
+        // the query param expects one api endpoint IE:
+        // /nested/endpoint?QUERYPARAM=$(".search").val()
+        // So it is not something that you can chain params onto.
+        // It expects you to send the data back as input data through that query param
+        // one character at a time.
+        queryParam: 'q',
+        type: 'POST',
+        contentType: 'json',
 
-      if (this.model) this.model.remove();
-      this.model = new ProfileModel();
-      var fetchId = 1;
-      if (this.id && this.id != 'edit') { fetchId = this.id; }
-      this.model.trigger("profile:fetch", fetchId);
-      // process a successful model fetch, and display the model
-      this.listenTo(this.model, "profile:fetch:success", function (model) {
-        // @instance
-        self.model = model;
-        var modelJson = model.toJSON();
-        for (i in modelJson.tags) {
-          if (modelJson.tags[i].tag.type == 'agency') {
-            self.model.agency = modelJson.tags[i].tag;
-            self.model.agency['tagId'] = modelJson.tags[i].id;
-          }
-          else if (modelJson.tags[i].tag.type == 'location') {
-            self.model.location = modelJson.tags[i].tag;
-            self.model.location['tagId'] = modelJson.tags[i].id;
-          }
+        // The plugin will accept any trigger key'd in here, and then
+        // use that to start the search process.  if it doesn't exist it will not search.
+        trigger: "@",
+        searchResultsClass: ".search-result-wrapper",
+
+        success: function (data) {
+
         }
-        self.initializeProfileViewInstance();
-      });
-      // if the profile fetch fails, check if it is due to the user
-      // not being logged in
-      this.listenTo(this.model, "profile:fetch:error", function (model, response) {
-        // if the user isn't logged in, trigger the login window
-        if (response.status === 403) {
-          window.cache.userEvents.trigger("user:request:login", "You must be logged in to view profiles");
-        }
-        var data = {
-          alert: {
-            message: "<strong>Unable to load profile.  Please reload this page to try again.</strong><br/>Error: "
-          }
-        };
-        // check if the response provided an error
-        if (response.responseText) {
-          var err = JSON.parse(response.responseText);
-          if (err.message) {
-            data.alert.message += err.message;
-          }
-        }
-        var template = _.template(AlertTemplate, data)
-        this.$el.html(template);
       });
     },
 
