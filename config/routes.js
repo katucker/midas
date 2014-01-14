@@ -43,6 +43,9 @@ module.exports.routes = {
   },
 
   // These routes are for backbone push state to work
+  '/about': {
+    view: 'main/index'
+  },
   '/projects': {
     view: 'main/index'
   },
