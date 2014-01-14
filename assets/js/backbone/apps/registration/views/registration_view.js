@@ -125,8 +125,9 @@ define([
         self.$("#registration-error").html(d.message);
         self.$("#registration-error").show();
       });
-	  this.model.trigger("profile:save", data); 
 	  Backbone.history.navigate('profile/edit', { trigger: true });
+	  this.model.trigger("profile:save", data);
+	  Backbone.history.navigate('profile/', { trigger: true }); 
     },
 
     cleanup: function () {

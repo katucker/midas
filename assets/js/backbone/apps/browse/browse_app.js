@@ -66,15 +66,16 @@ define([
 	  this.bind("reset", this.updateView);
       this.cleanupChildren();
       this.browseListController = new BrowseListController({
+		el: '#home',
         target: 'projects',
         data: this.data
       });
     },
 
     listTasks: function () {
-	  this.bind("reset", this.updateView);
       this.cleanupChildren();
       this.browseListController = new BrowseListController({
+		el: '#home',
         target: 'tasks',
         data: this.data
       });
