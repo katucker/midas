@@ -115,19 +115,18 @@ define([
       $.ajax({
         url: '/api/auth/local',
         type: 'POST',
-        data: data,
-		this.model.trigger("profile:save", data)
-      }).done(function (success) {
-		  
+        data: data
+      }).done(function (success) {				 
         // Set the user object and trigger the user login event
         window.cache.currentUser = success;
         window.cache.userEvents.trigger("user:login", success);
-		Backbone.history.navigate('profile/edit', { trigger: true });
       }).fail(function (error) {
         var d = JSON.parse(error.responseText);
         self.$("#registration-error").html(d.message);
         self.$("#registration-error").show();
       });
+	  this.model.trigger("profile:save", data); 
+	  Backbone.history.navigate('profile/edit', { trigger: true });
     },
 
     cleanup: function () {
