@@ -58,7 +58,12 @@
     </div>
 	
 	<div id="home">
-	<script>location.reload();</script>	
+	<script>window.onload = function() {
+    if(!window.location.hash) {
+        window.location = window.location + '#home';
+        window.location.reload();
+    }
+}</script>	
 	</div>
 
     <%- body %>
