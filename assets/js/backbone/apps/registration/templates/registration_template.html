@@ -18,7 +18,92 @@ font-weight:bold;
 font-color:black; 
 }
 </style>
+<!--temp test-->
+<div class="box box-main">
 
+  <form class="form-horizontal" role="form" id="profile-form">
+    <h1>
+      <div class="form-group">
+        <input type="text" class="form-control input-lg" id="name" name="name" placeholder="Your Full Name" value="<% if (data.name) { %><%- data.name %><% } %>"/>
+      </div>
+    </h1>
+
+    <h2> Bio </h2>
+
+    <div class="form-group">
+      <label for="title" class="col-md-3 control-label">Title</label>
+      <div class="col-md-9">
+        <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="<% if (data.title) { %><%- data.title %><% } %>"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="company" class="col-md-3 control-label">OpDiv</label>
+      <div class="col-md-9">
+        <input type="hidden" id="company" name="company" style="width: 100%"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="location" class="col-md-3 control-label">Location</label>
+      <div class="col-md-9">
+        <input type="hidden" id="location" name="location" style="width: 100%"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="bio" class="col-md-3 control-label">A brief public biography</label>
+      <div class="col-md-9">
+        <textarea class="form-control" name="bio" id="bio" rows="5"><% if (data.bio) { %><%- data.bio %><% } %></textarea>
+      </div>
+    </div>
+
+    <h2> Account Information </h2>
+
+    <div class="form-group">
+      <label for="username" class="col-md-3 control-label">Username</label>
+      <div class="col-md-9 input-group">
+        <input type="text" class="form-control" id="username" name="username" placeholder="username" value="<% if (data.username) { %><%- data.username %><% } %>"/>
+        <span class="input-group-btn">
+          <a href="#" class="btn btn-success" id="username-button">
+            <i id="username-check" class="icon-ok"></i>
+          </a>
+        </span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="primaryEmail" class="col-md-3 control-label">Primary Email</label>
+      <div class="col-md-9">
+        <div id="profile-emails">
+        </div>
+        <a href="#addEmail" class="btn btn-default btn-xs" id="add-email" data-toggle="modal">Add Email Address</a>
+      </div>
+    </div>
+    <!-- <div class="form-group">
+      <label for="services" class="col-md-3 control-label">Services</label>
+      <div class="col-md-9">
+        <% if (_.contains(data.auths, 'linkedin')) { %>
+          <button class="btn btn-success btn-xs" disabled="disabled"><span class="glyphicon glyphicon-ok" alt="Connected"></span></button>
+          <a href="#" class="btn btn-default btn-xs removeAuth" id="linkedin"><span class="glyphicon glyphicon-remove"></span></a>
+        <% } else { %>
+          <button class="btn btn-danger btn-xs" disabled="disabled"><span class="glyphicon glyphicon-remove" alt="Disconnected"></span></button>
+          <a href="/api/auth/linkedin" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus"></span></a>
+        <% } %>
+        <i class="icon icon-linkedin-sign" alt="LinkedIn"></i> LinkedIn
+      </div>
+    </div> -->
+    <div class="form-group">
+      <div class="col-md-offset-3 col-md-9">
+
+        <button id="submit" type="submit" class="btn btn-primary" disabled="disabled" data-loading-text="<i class='icon-spinner icon-spin'></i> Saving..." data-success-text="Saved!" data-fail-text="Save Failed.">Save Changes</button>
+
+        <a href="#" class="btn btn-c0" id="profile-cancel">Cancel</a>
+      </div>
+    </div>
+
+  </form>
+</div>
+<!--temp-->
       <h3>Registration </h3>
         <div class="form-group">
           <label for="company" class="col-sm-offset-1 col-sm-3 control-label">Full Name</label>
