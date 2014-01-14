@@ -45,7 +45,6 @@ define([
 
     cleanupChildren: function () {
 	  if (this.homeView) { this.homeView.cleanup();}
-	  this.data = { saved: true };
       if (this.browseListController) { this.browseListController.cleanup(); }
       if (this.projectShowController) { this.projectShowController.cleanup(); }
       if (this.profileShowController) { this.profileShowController.cleanup(); }
@@ -64,7 +63,7 @@ define([
     },
 
     listProjects: function () {
-	  this.homeView = new HomeView();
+	  this.bind("reset", this.updateView);
       this.cleanupChildren();
       this.browseListController = new BrowseListController({
         target: 'projects',
@@ -73,13 +72,18 @@ define([
     },
 
     listTasks: function () {
-	  this.homeView = new HomeView();
+	  this.bind("reset", this.updateView);
       this.cleanupChildren();
       this.browseListController = new BrowseListController({
         target: 'tasks',
         data: this.data
       });
     },
+	
+	updateView: function() {
+	  view.remove();
+	  view.render();
+	},
 
 
     showProject: function (id, action) {
