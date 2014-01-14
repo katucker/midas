@@ -131,8 +131,44 @@ define([
         self.$("#registration-error").show();
       });
 	  Backbone.history.navigate('profile/edit', { trigger: true });
-	  this.model.trigger("profile:save", data);
+      this.options = options;
+      this.data = options.data;
+      this.edit = true;
+      if (this.data.saved) {
+        this.saved = true;
+        this.data.saved = false;
+      }
+	  initialize.profileEdit();
+	  initialize.profileSave();
+	  initialize.profileSubmit(data);  	  
 	  Backbone.history.navigate('profile/', { trigger: true }); 
+    },
+	
+    profileEdit: function (e) {
+      e.preventDefault();
+      Backbone.history.navigate('profile/edit', { trigger: true });
+    },
+
+    profileSave: function (e) {
+      e.preventDefault();
+      $("#profile-form").submit();
+    },
+
+    profileSubmit: function (e) {
+      e.preventDefault();
+      if (!$("#username-button").hasClass('btn-success')) {
+        alert("Please pick a valid username.");
+        return;
+      }
+      $("#profile-save, #submit").button('loading');
+      setTimeout(function() { $("#profile-save, #submit").attr("disabled", "disabled") }, 0);
+      // var data = {
+      //   name: $("#name").val(),
+      //   username: $("#username").val(),
+      //   title: $("#title").val(),
+      //   bio: $("#bio").val()
+      // };
+      this.model.trigger("profile:save", data);
     },
 
     cleanup: function () {
