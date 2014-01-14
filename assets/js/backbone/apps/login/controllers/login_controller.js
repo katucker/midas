@@ -75,25 +75,13 @@ define([
         message: this.options.message
       }).render();
 	  this.initializeProfileModelInstance();
-
+	  this.model = new ProfileModel();
     },
 
     initializeProfileModelInstance: function () {
       var self = this;
-
-      if (this.model) this.model.remove();
       this.model = new ProfileModel();
-        var modelJson = this.model.toJSON();
-        for (i in modelJson.tags) {
-          if (modelJson.tags[i].tag.type == 'agency') {
-            self.model.agency = modelJson.tags[i].tag;
-            self.model.agency['tagId'] = modelJson.tags[i].id;
-          }
-          else if (modelJson.tags[i].tag.type == 'location') {
-            self.model.location = modelJson.tags[i].tag;
-            self.model.location['tagId'] = modelJson.tags[i].id;
-          }
-        }
+      var modelJson = this.model.toJSON();
     },
 
     // ---------------------

@@ -3,7 +3,7 @@
 
       <form class="form-horizontal" role="form">
 <style>
-/*.terms {
+.terms {
 width: 100%;
 height: 300px;
 border: 1px solid #ccc;
@@ -16,23 +16,25 @@ h3 {
 background: #F04F24 ;
 font-weight:bold;
 font-color:black; 
-}*/
+}
 </style>
 
       <h3>Registration </h3>
         <div class="form-group">
-			<label for="company" class="col-md-3 control-label">Full Name</label>
-          <input type="text" class="form-control input-lg" id="name" name="name" placeholder="Your Full Name" value="<% if (data.name) { %><%- data.name %><% } %>"/>
+          <label for="company" class="col-md-3 control-label">Full Name</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control input-lg" id="name" name="name" placeholder="Your Full Name" value=""/>
+          </div>
         </div>
         <div class="form-group">
           <label for="company" class="col-md-3 control-label">OpDiv</label>
-          <div class="col-md-9">
+          <div class="col-sm-6">
             <input type="text" id="company" name="company" style="width: 100%"/>
           </div>
         </div>
         <div class="form-group">
           <label for="location" class="col-md-3 control-label">Work Location</label>
-          <div class="col-md-9">
+          <div class="col-sm-6">
             <input type="text" id="location" name="location" style="width: 100%"/>
           </div>
         </div>

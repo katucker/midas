@@ -56,9 +56,10 @@
   <body>
     <div class="navigation">
     </div>
-	<div id="home">
-	
+	<% if (window.location.href == sails.config['httpProtocol'] + '://' + sails.config['hostName']  + ":1337/") { %>
+	<div id="home">	
 	</div>
+	<% } else {}; %>
     <%- body %>
 
 
