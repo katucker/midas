@@ -57,6 +57,7 @@ define([
           el: '#home'
         }).render();
         this.browseListController = new BrowseListController({
+		  el: '#home',
           target: 'projects',
           data: this.data
         });
@@ -80,12 +81,6 @@ define([
         data: this.data
       });
     },
-	
-	updateView: function() {
-	  view.remove();
-	  view.render();
-	},
-
 
     showProject: function (id, action) {
       this.cleanupChildren();
