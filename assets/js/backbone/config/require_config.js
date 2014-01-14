@@ -65,6 +65,12 @@ require.config({
     'home_controller'          : '../apps/home/controllers/home_controller',
 	
     // ----------
+    //= About
+    // ----------
+    'about_view'               : '../apps/about/views/about_view',
+    'about_template'           : '../apps/about/templates/about_template.html',
+	
+    // ----------
     //= Login
     // ----------
     'login_config'              : '../config/login',
