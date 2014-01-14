@@ -23,6 +23,7 @@ define([
       var template = _.template(RegistrationTemplate);
       this.$el.html(template);
 	  this.initializeSelect2();
+	  this.initializeTags();
       return this;
     },
 	
@@ -84,6 +85,18 @@ define([
       $("#location").on('change', function (e) {
         self.model.trigger("profile:input:changed", e);
       });
+    },
+	
+    initializeTags: function() {
+      if (this.tagView) { this.tagView.cleanup(); }
+      this.tagView = new TagShowView({
+        model: this.model,
+        el: '.tag-wrapper',
+        target: '',
+        edit: this.edit,
+        url: '/api/tag/findAllByUserId/'
+      });
+      this.tagView.render();
     },
 
     submit: function (e) {

@@ -61,7 +61,6 @@ define([
           target: 'projects',
           data: this.data
         });
-		this.homeView.remove();
     },
 
     listProjects: function () {
