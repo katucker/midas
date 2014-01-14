@@ -8,12 +8,15 @@ require.config({
     // ----------
     'text'                      : '../../vendor/text',
     'jquery'                    : '../../vendor/jquery',
+    'moment'                    : '../../vendor/moment/moment',
     'jquery_timeago'            : '../../vendor/jquery.timeago',
     'jquery_select2'            : '../../vendor/select2/select2',
+    'jquery_timepicker'         : '../../vendor/jquery-timepicker/jquery.timepicker',
     'dropzone'                  : '../../vendor/dropzone-amd-module',
     'underscore'                : '../../vendor/underscore',
     'backbone'                  : '../../vendor/backbone',
     'bootstrap'                 : '../../vendor/bootstrap',
+    'bootstrap-datetimepicker'  : '../../vendor/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min',
     'async'                     : '../../vendor/async/lib/async',
 
     // ---------
@@ -49,6 +52,34 @@ require.config({
     'nav_template'              : '../apps/nav/templates/nav_template.html',
 
     // ----------
+    //= Footer
+    // ----------
+    'footer_view'               : '../apps/footer/views/footer_view',
+    'footer_template'           : '../apps/footer/templates/footer_template.html',
+	
+    // ----------
+    //= Home
+    // ----------
+    'home_view'               : '../apps/home/views/home_view',
+    'home_template'           : '../apps/home/templates/home_template.html',
+    'home_controller'          : '../apps/home/controllers/home_controller',
+	
+    // ----------
+    //= Login
+    // ----------
+    'login_config'              : '../config/login',
+    'login_view'                : '../apps/login/views/login_view',
+    'login_template'            : '../apps/login/templates/login_template.html',
+    'login_controller'          : '../apps/login/controllers/login_controller',
+
+    // ----------
+    //= Registration
+    // ----------
+    'registration_view'                : '../apps/registration/views/registration_view',
+    'registration_template'            : '../apps/registration/templates/registration_template.html',
+    'registration_controller'          : '../apps/registration/controllers/registration_controller',
+
+    // ----------
     //= Browse
     // ----------
     'browse_app'                : '../apps/browse/browse_app',
@@ -80,7 +111,7 @@ require.config({
     // ----------
     //= Tags
     // ----------
-    'tag_config'                : '../components/tag',
+    'tag_config'                : '../config/tag',
     'tag_show_view'             : '../apps/tag/show/views/tag_show_view',
     'tag_show_template'         : '../apps/tag/show/templates/tag_show_template.html',
     'tag_item_template'         : '../apps/tag/show/templates/tag_item_template.html',
@@ -138,7 +169,6 @@ require.config({
     //= Comments
     // ----------
     'comment_list_controller'   : '../apps/comments/list/controllers/comment_list_controller',
-    'comment_list_template'     : '../apps/comments/list/templates/comment_list_template.html',
     'comment_item_template'     : '../apps/comments/list/templates/comment_item_template.html',
     'comment_wrapper_template'  : '../apps/comments/list/templates/comment_wrapper_template.html',
     'comment_list_view'         : '../apps/comments/list/views/comment_list_view',
@@ -155,6 +185,7 @@ require.config({
     'modal_template'            : '../components/modal_template.html',
     'modal_wizard_component'    : '../components/modal_wizard',
     'modal_wizard_template'     : '../components/modal_wizard_template.html',
+    'alert_template'            : '../components/alert_template.html',
     'autocomplete'              : '../mixins/autocomplete'
   },
 
@@ -166,4 +197,9 @@ require.config({
     }
   }
 
+});
+
+// moment needs to be initialized or plugins will throw an error
+define(["moment"], function (moment) {
+    moment().format();
 });

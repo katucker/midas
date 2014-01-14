@@ -4,19 +4,23 @@ define([
   'backbone',
   'utilities',
   'nav_view',
+  'footer_view',
   'browse_list_controller',
   'project_model',
   'project_show_controller',
   'profile_show_controller',
   'task_model',
   'task_show_controller',
-  'task_edit_form_view'
-], function ($, _, Backbone, utils, NavView, BrowseListController, ProjectModel, ProjectShowController, ProfileShowController, TaskModel, TaskShowController, TaskEditFormView) {
+  'task_edit_form_view',
+  'home_view',
+  'home_controller'
+  
+], function ($, _, Backbone, utils, NavView, FooterView, BrowseListController, ProjectModel, ProjectShowController, ProfileShowController, TaskModel, TaskShowController, TaskEditFormView, HomeView, HomeController) {
 
   var BrowseRouter = Backbone.Router.extend({
 
     routes: {
-      ''                          : 'redirectHome',
+      ''                          : 'showHome',
       'projects(/)'               : 'listProjects',
       'projects/:id(/)'           : 'showProject',
       'projects/:id/:action(/)'   : 'showProject',
@@ -33,9 +37,14 @@ define([
       this.navView = new NavView({
         el: '.navigation'
       }).render();
+      this.footerView = new FooterView({
+        el: '#footer'
+      }).render();
+      
     },
 
     cleanupChildren: function () {
+	  if (this.homeView) { this.homeView.cleanup();}
       if (this.browseListController) { this.browseListController.cleanup(); }
       if (this.projectShowController) { this.projectShowController.cleanup(); }
       if (this.profileShowController) { this.profileShowController.cleanup(); }
@@ -43,8 +52,15 @@ define([
       this.data = { saved: false };
     },
 
-    redirectHome: function () {
-      Backbone.history.navigate('/projects', { trigger: true });
+    showHome: function () {
+        this.homeView = new HomeView({
+          el: '#home'
+        }).render();
+        this.browseListController = new BrowseListController({
+          target: 'projects',
+          data: this.data,
+		  el: '#home'
+        });
     },
 
     listProjects: function () {
