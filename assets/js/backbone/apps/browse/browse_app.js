@@ -57,9 +57,9 @@ define([
           el: '#home'
         }).render();
         this.browseListController = new BrowseListController({
-		  el: '#home',
           target: 'projects',
-          data: this.data
+          data: this.data,
+		  el: '#home'
         });
     },
 

@@ -13,7 +13,8 @@ define([
   var RegistrationView = Backbone.View.extend({
 
     events: {
-      'submit #registration-form'    : 'submit'
+      'submit #registration-form'    : 'submit',
+	  'click #agree-checkbox'	: 'activate'
     },
 
     initialize: function (options) {
@@ -100,6 +101,10 @@ define([
       });
       this.tagView.render();
     },
+	
+	activate: function() {
+		$('#register-button').disabled(false);
+	},
 
     submit: function (e) {
       var self = this;
