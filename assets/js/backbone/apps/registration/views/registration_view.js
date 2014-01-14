@@ -109,7 +109,7 @@ define([
         password: this.$("#password").val(),
         name: this.$("#name").val(),
         agency: this.$("#agency").val(),
-        location: this.$("#location").val()
+        location: this.$("#location").val(),
         json: true
       };
       $.ajax({
