@@ -89,8 +89,8 @@ define([
       this.loginView = new RegistrationView({
         el: ".modal-template",
 		model: this.model,
-		data: this.data		      
-        message: this.options.message
+		data: this.data,		      
+        message: this.options.message,
 		this.initializeProfileModelInstance();
       }).render();
 	 
