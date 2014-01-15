@@ -63,7 +63,7 @@ define([
         self.model.trigger("profile:input:changed", e);
       });
       $("#location").select2({
-        placeholder: 'Select a Location',
+        placeholder: 'Enter State, Country',
         formatResult: formatResult,
         formatSelection: formatResult,
         minimumInputLength: 1,
@@ -104,6 +104,8 @@ define([
 	
 	activate: function() {
 	  $("#register-button").removeAttr("disabled");
+	  $("#register-button").removeAttr("style");
+	  
 	},
 
     submit: function (e) {

@@ -64,11 +64,19 @@ define([
 
       // Initialize Select2 for Administrative Functions
       var formatResult = function (object, container, query) {
-        return '<i class="' + tagIcon[object.type] + '"></i> ' + object.name;
+		  if (Backbone.history.fragment == "project" && object.name == "Topics") {
+		  	return '<i class="' + tagIcon[object.type] + '"></i> Related Topics ';
+		  }
+		  else if (Backbone.history.fragment == "profile" && object.name == "Topics")
+		  {
+			return '<i class="' + tagIcon[object.type] + '"></i> Topics of Interests ';
+		  }else{
+		    return '<i class="' + tagIcon[object.type] + '"></i> ' + object.name;	
+		  }
       };
 
-      $("#input-tags").select2({
-        placeholder: 'Add tags',
+      $("#input-tags").select2({	  
+        placeholder: 'Add' + Backbone.history.fragment +  'keywords(tags)',
         multiple: true,
         formatResult: formatResult,
         formatSelection: formatResult,

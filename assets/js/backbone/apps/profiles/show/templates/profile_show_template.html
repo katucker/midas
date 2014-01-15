@@ -38,7 +38,7 @@
       <form class="form-horizontal" role="form" id="profile-form">
         <h1>
           <div class="form-group">
-            <input type="text" class="form-control input-lg" id="name" name="name" placeholder="Your Full Name" value="<% if (data.name) { %><%- data.name %><% } %>"/>
+            <input type="text" class="form-control input-lg" id="name" name="name" placeholder="First Name and Last Name" value="<% if (data.name) { %><%- data.name %><% } %>"/>
           </div>
         </h1>
 
@@ -66,9 +66,9 @@
         </div>
 
         <div class="form-group">
-          <label for="bio" class="col-md-3 control-label">A brief public biography</label>
+          <label for="bio" class="col-md-3 control-label">More About You</label>
           <div class="col-md-9">
-            <textarea class="form-control" name="bio" id="bio" rows="5"><% if (data.bio) { %><%- data.bio %><% } %></textarea>
+            <textarea class="form-control" name="bio" id="bio" rows="5" placeholder="Provide details on the office you work in, things you are interested in, background information, etc. "><% if (data.bio) { %><%- data.bio %><% } %></textarea>
           </div>
         </div>
 
@@ -145,7 +145,7 @@
           <div class="navbar-side <% if (data.isOwner) { %>border-bottom<% } %>">
             <ul class="nav nav-pills nav-stacked">
               <li>
-                <a href="#" id="email"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Email</span></a>
+                <a href="#" id="email"><i class="icon icon-envelope-alt"></i> <span class="box-icon-text">Share</span></a>
               </li>
               <% if (data.isOwner) { %>
               <li>
@@ -173,18 +173,18 @@
       </div>
 
       <div class="box-pad-lr box-pad-t">
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-xs-3 col-sm-3 col-md-3">
             Username:
           </div>
           <div class="col-xs-9 col-sm-9 col-md-9">
             <% if (data.username) { %><%- data.username %><% } %>
           </div>
-        </div>
+        </div> -->
 
         <div class="row">
           <div class="col-xs-3 col-sm-3 col-md-3">
-            Emails:
+            Email:
           </div>
           <div class="col-xs-9 col-sm-9 col-md-9">
             <% for (var e = 0; e < data.emails.length; e++) { %>
@@ -205,7 +205,7 @@
             <i class="icon icon-linkedin-sign" alt="LinkedIn"></i> LinkedIn -
             <% if (_.contains(data.auths, 'linkedin')) { %>Connected<% } else { %>Not Connected<% } %>
           </div>
-        </div> -->
+        </div>  -->
       </div>
     </div>
     <% } %>
