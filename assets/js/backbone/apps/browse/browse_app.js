@@ -71,7 +71,8 @@ define([
 		this.cleanupChildren();
         this.aboutView = new AboutView({
           el: '#home'
-        }).render();	
+        }).render();
+		this.projectShowController = new ProjectShowController({ el: '#home' });	
 	},
 	
 
