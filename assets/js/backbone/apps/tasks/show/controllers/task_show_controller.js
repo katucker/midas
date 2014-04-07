@@ -8,8 +8,10 @@ define([
   'attachment_show_view',
   'task_item_view',
   'tag_show_view',
+  'modal_component',
+  'modal_alert',
   'task_edit_form_view'
-], function (Bootstrap, _, Backbone, Popovers, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, TaskEditFormView) {
+], function (Bootstrap, _, Backbone, Popovers, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, ModalComponent, ModalAlert, TaskEditFormView) {
 
   var popovers = new Popovers();
 
@@ -37,6 +39,32 @@ define([
     },
 
     initializeEdit: function () {
+      var model = this.model.toJSON();
+      // check if the user owns the task
+      var owner = model.isOwner;
+      if (owner !== true) {
+        // if they don't own the task, do they own the project?
+        if (!_.isUndefined(model.project)) {
+          if (model.project.isOwner === true) {
+            owner = true;
+          }
+        }
+        // if none of these apply, are they an admin?
+        if (window.cache.currentUser) {
+          if (window.cache.currentUser.isAdmin === true) {
+            owner = true;
+          }
+        }
+      }
+      // if not the owner, trigger the login dialog.
+      if (owner !== true) {
+        window.cache.userEvents.trigger("user:request:login", {
+          message: "You are not the owner of this opportunity. <a class='link-backbone' href='/tasks/" + model.id + "'>View the opportunity instead.</a>",
+          disableClose: true
+        });
+        return;
+      }
+
       if (this.taskEditFormView) this.taskEditFormView.cleanup();
       this.taskEditFormView = new TaskEditFormView({
         el: '.edit-task-section',
@@ -206,19 +234,38 @@ define([
       if (e.preventDefault) e.preventDefault();
       var self = this;
       var child = $(e.currentTarget).children("#like-button-icon");
-      $.ajax({
-        url: '/api/volunteer/',
-        type: 'POST',
-        data: {
-          taskId: this.model.attributes.id
+
+      if (this.modalAlert) { this.modalAlert.cleanup(); }
+      if (this.modalComponent) { this.modalComponent.cleanup(); }
+      this.modalComponent = new ModalComponent({
+        el: "#modal-volunteer",
+        id: "check-volunteer",
+        modalTitle: "Do you want to volunteer?"
+      }).render();
+
+      this.modalAlert = new ModalAlert({
+        el: "#check-volunteer .modal-template",
+        modalDiv: '#check-volunteer',
+        content: '<p>I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.</p><p>Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer.</p>',
+        cancel: 'Cancel',
+        submit: 'I Agree',
+        callback: function (e) {
+          // user clicked the submit button
+          $.ajax({
+            url: '/api/volunteer/',
+            type: 'POST',
+            data: {
+              taskId: self.model.attributes.id
+            }
+          }).done( function (data) {
+            $('.volunteer-true').show();
+            $('.volunteer-false').hide();
+            var html = '<div class="project-people-div" data-userid="' + data.userId + '"><img src="/api/user/photo/' + data.userId + '" class="project-people"/></div>';
+            $('#task-volunteers').append(html);
+            popovers.popoverPeopleInit(".project-people-div");
+          });
         }
-      }).done( function (data) {
-        $('.volunteer-true').show();
-        $('.volunteer-false').hide();
-        var html = '<div class="project-people-div" data-userid="' + data.userId + '"><img src="/api/user/photo/' + data.userId + '" class="project-people"/></div>';
-        $('#task-volunteers').append(html);
-        popovers.popoverPeopleInit(".project-people-div");
-      });
+      }).render();
     },
 
     volunteered: function (e) {
@@ -228,7 +275,27 @@ define([
 
     stateClose: function (e) {
       if (e.preventDefault) e.preventDefault();
-      this.model.trigger("task:update:state", 'closed');
+      var self = this;
+
+      if (this.modalAlert) { this.modalAlert.cleanup(); }
+      if (this.modalComponent) { this.modalComponent.cleanup(); }
+      this.modalComponent = new ModalComponent({
+        el: "#modal-close",
+        id: "check-close",
+        modalTitle: "Close Opportunity"
+      }).render();
+
+      this.modalAlert = new ModalAlert({
+        el: "#check-close .modal-template",
+        modalDiv: '#check-close',
+        content: '<p>Are you sure you want to close this opportunity?  Once the opportunity is closed, volunteers will no longer be able to contribute.</p>',
+        cancel: 'Cancel',
+        submit: 'Close Opportunity',
+        callback: function (e) {
+          // user clicked the submit button
+          self.model.trigger("task:update:state", 'closed');
+        }
+      }).render();
     },
 
     stateReopen: function (e) {

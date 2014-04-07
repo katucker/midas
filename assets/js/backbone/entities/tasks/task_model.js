@@ -19,7 +19,7 @@ define([
       });
 
       this.listenTo(this, "task:model:fetch", function (data) {
-        this.get(data);
+        this.remoteGet(data);
       });
 
       this.listenTo(this, "task:update", function (data) {
@@ -34,10 +34,7 @@ define([
     update: function (data) {
       var self = this;
 
-      this.save({
-        title       : data['title'],
-        description : data['description']
-      }, {
+      this.save(data, {
         success: function (data) {
           self.trigger("task:update:success", data);
         }
@@ -56,7 +53,7 @@ define([
       });
     },
 
-    get: function (id) {
+    remoteGet: function (id) {
       var self = this;
       this.set({ id: id });
       this.fetch({

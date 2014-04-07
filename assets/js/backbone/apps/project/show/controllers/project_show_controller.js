@@ -15,10 +15,11 @@ define([
   'comment_list_controller',
   'comment_form_view',
   'modal_component',
+  'modal_alert',
   'autocomplete'
 ], function ($, _, async, Backbone, utils, Popovers, BaseController, ProjectItemView, ProjectItemCoreMetaView, ProjectownerShowView, AttachmentView,
   TaskListController, EventListController, CommentListController, CommentFormView,
-  ModalComponent, autocomplete) {
+  ModalComponent, ModalAlert, autocomplete) {
 
   var popovers = new Popovers();
 
@@ -56,8 +57,29 @@ define([
       this.action = options.action;
 
       this.model.trigger("project:model:fetch", this.model.id);
-      this.listenTo(this.model, "project:model:fetch:success", function (model) {
-        this.model = model;
+      this.listenTo(this.model, "project:model:fetch:success", function (projectModel) {
+        self.model = projectModel;
+        if (self.action == 'edit') {
+          var model = this.model.toJSON();
+          // check if the user owns the task
+          var owner = model.isOwner;
+          if (owner !== true) {
+            // if none of these apply, are they an admin?
+            if (window.cache.currentUser) {
+              if (window.cache.currentUser.isAdmin === true) {
+                owner = true;
+              }
+            }
+          }
+          // if not the owner, trigger the login dialog.
+          if (owner !== true) {
+            window.cache.userEvents.trigger("user:request:login", {
+              message: "You are not the owner of this project. <a class='link-backbone' href='/projects/" + model.id + "'>View the project instead.</a>",
+              disableClose: true
+            });
+            return;
+          }
+        }
         self.initializeItemView();
       });
 
@@ -200,7 +222,27 @@ define([
 
     stateClose: function (e) {
       if (e.preventDefault) e.preventDefault();
-      this.model.trigger("project:update:state", 'closed');
+      var self = this;
+
+      if (this.modalAlert) { this.modalAlert.cleanup(); }
+      if (this.modalComponent) { this.modalComponent.cleanup(); }
+      this.modalComponent = new ModalComponent({
+        el: "#modal-close",
+        id: "check-close",
+        modalTitle: "Close Project"
+      }).render();
+
+      this.modalAlert = new ModalAlert({
+        el: "#check-close .modal-template",
+        modalDiv: '#check-close',
+        content: '<p>Are you sure you want to close this project?  Once the project is closed, participants will no longer be able to contribute.</p>',
+        cancel: 'Cancel',
+        submit: 'Close Project',
+        callback: function (e) {
+          // user clicked the submit button
+          self.model.trigger("project:update:state", 'closed');
+        }
+      }).render();
     },
 
     stateReopen: function (e) {
@@ -248,17 +290,6 @@ define([
           // response should be null (empty)
         });
       }
-    },
-
-    delete: function (e) {
-      if (e.preventDefault) e.preventDefault();
-      var model, title;
-
-      attr = $(e.currentTarget).closest(".project-title").children(".project").text();
-      model = getCurrentModelFromFormAttributes(this.collection, attr);
-
-      model.destroy();
-      this.renderProjectCollectionView();
     },
 
     // ---------------------

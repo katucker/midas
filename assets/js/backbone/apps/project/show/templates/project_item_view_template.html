@@ -12,8 +12,9 @@
         <% } else { %>
         <div id="project-header" style="background-image:url('/images/project_default.png');">
         <% } %>
-          <div id="fileupload" class="btn btn-c2" <% if (!data.isOwner || !edit) { %>style="display:none;"<% } %>>
+          <div class="btn btn-c2 fileinput-button" <% if (!data.isOwner || !edit) { %>style="display:none;"<% } %>>
             <i class="icon-camera icon-large" title="Change Cover Photo" id="fileupload-icon"></i>
+            <input id="fileupload" type="file" name="files[]">
           </div>
         </div>
         <div id="file-upload-progress-container" style="display: none;" class="progress progress-striped active">
@@ -64,6 +65,7 @@
           </div>
           <% if (data.isOwner) { %>
           <div class="navbar-side">
+            <div id="modal-close"></div>
             <ul class="nav nav-pills nav-stacked">
               <li>
                 <a href="#" id="editProject"><i class="icon-pencil"></i> <span class="box-icon-text">Edit Project</span></a>
@@ -131,7 +133,7 @@
     <div class="row">
       <div class="col-md-12 sm-nopadding md-nopadding">
         <!-- BEGIN TASKS -->
-        <div class="modal fade" id="addTask"></div>
+        <div class="wrapper-addTask"></div>
         <div class="box" id="task-list-wrapper" data-project-id="<%= data.id %>">
         </div>
         <!-- END TASKS -->

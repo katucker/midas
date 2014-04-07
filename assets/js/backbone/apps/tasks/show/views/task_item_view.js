@@ -4,16 +4,18 @@ define([
   'backbone',
   'utilities',
   'async',
+  'marked',
   'jquery_timeago',
   'base_view',
   'text!task_show_template'
-], function (Bootstrap, _, Backbone, utils, async, TimeAgo, BaseView, TaskShowTemplate) {
+], function (Bootstrap, _, Backbone, utils, async, marked, TimeAgo, BaseView, TaskShowTemplate) {
 
   var TaskItemView = BaseView.extend({
 
     initialize: function (options) {
       var self = this;
-      this.model.trigger("task:model:fetch", this.options.id);
+      this.options = options;
+      this.model.trigger("task:model:fetch", options.id);
       this.listenTo(this.model, "task:model:fetch:success", function (model) {
         self.model = model;
         self.initializeTags(self);
@@ -36,6 +38,8 @@ define([
             tags: self.tags
           };
           self.data['madlibTags'] = organizeTags(self.tags);
+          // convert description from markdown to html
+          self.data.model.descriptionHtml = marked(self.data.model.description);
           self.model.trigger('task:tag:data', self.tags, self.data['madlibTags']);
           return cb();
         }

@@ -6,6 +6,7 @@
  */
 var taskUtil = require('../services/utils/task');
 var tagUtil = require('../services/utils/tag');
+var userUtil = require('../services/utils/user');
 
 module.exports = {
 
@@ -24,18 +25,10 @@ module.exports = {
       });
       return;
     }
-    Task.find()
-    .where({ state: 'public' })
-    .sort({'updatedAt': -1})
-    .exec(function (err, tasks) {
-      if (err) { return res.send(400, { message: 'Error looking up tasks.' }); }
-      async.each(tasks, taskUtil.getTags, function (err) {
-        if (err) { return res.send(400, { message: 'Error looking up task tags.' }); }
-        async.each(tasks, taskUtil.getLikes, function (err) {
-          if (err) { return res.send(400, { message: 'Error looking up task likes.' }); }
-          return res.send({ tasks: tasks });
-        });
-      });
+    // run the common task find query
+    taskUtil.findTasks({}, function (err, tasks) {
+      if (err) { return res.send(400, err); }
+      return res.send({ tasks: tasks });
     });
   },
 
