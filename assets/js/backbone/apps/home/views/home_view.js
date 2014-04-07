@@ -12,14 +12,13 @@ define([
     },
 
     render: function () {
-      var self = this;
       var compiledTemplate = _.template(HomeTemplate);
       this.$el.html(compiledTemplate);
+      return this;
     },
 
-    cleanup: function () {	  
+    cleanup: function () {
       removeView(this);
-	  this.$el.html();
     }
 
   });

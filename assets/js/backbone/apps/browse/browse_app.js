@@ -22,7 +22,7 @@ define([
 
     routes: {
       ''                          : 'showHome',
-	  'about(/)'				  : 'showAbout',	
+      'about(/)'                  : 'showAbout',  
       'projects(/)'               : 'listProjects',
       'projects/:id(/)'           : 'showProject',
       'projects/:id/:action(/)'   : 'showProject',
@@ -46,8 +46,8 @@ define([
     },
 
     cleanupChildren: function () {
-	  if (this.homeView) { this.homeView.cleanup(); }
-	  if (this.aboutView) { this.aboutView.cleanup(); }
+      if (this.homeView) { this.homeView.cleanup(); }
+      if (this.aboutView) { this.aboutView.cleanup(); }
       if (this.browseListController) { this.browseListController.cleanup(); }
       if (this.projectShowController) { this.projectShowController.cleanup(); }
       if (this.profileShowController) { this.profileShowController.cleanup(); }
@@ -56,26 +56,25 @@ define([
     },
 
     showHome: function () {
-		this.cleanupChildren();
-        this.homeView = new HomeView({
-          el: '#home'
-        }).render();
-        this.browseListController = new BrowseListController({
-		  el: '#home',
-          target: 'projects',
-          data: this.data
-        });
+      this.cleanupChildren();
+      this.homeView = new HomeView({
+        el: '#home'
+      }).render();
+      this.browseListController = new BrowseListController({
+        el: '#container',
+        target: 'projects',
+        data: this.data
+      });
     },
-	
-	showAbout: function () {
-		this.cleanupChildren();
-        this.aboutView = new AboutView({
-          el: '#home'
-        }).render();
-		this.projectShowController = new ProjectShowController({ el: '#home' });	
-	},
-	
-
+  
+    showAbout: function () {
+      this.cleanupChildren();
+      this.aboutView = new AboutView({
+        el: '#home'
+      }).render();
+      this.projectShowController = new ProjectShowController({ el: '#home' });  
+    },
+  
     listProjects: function () {
       this.cleanupChildren();
       this.browseListController = new BrowseListController({
