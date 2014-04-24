@@ -14,9 +14,13 @@ define([
   'task_edit_form_view',
   'home_view',
   'home_controller',
-  'about_view'
-  
-], function ($, _, Backbone, utils, NavView, FooterView, BrowseListController, ProjectModel, ProjectShowController, ProfileShowController, TaskModel, TaskShowController, TaskEditFormView, HomeView, HomeController, AboutView) {
+  'about_view',
+  'admin_main_controller'
+], function ($, _, Backbone, utils, NavView, FooterView, BrowseListController,
+  ProjectModel, ProjectShowController, ProfileShowController, TaskModel,
+  TaskShowController, TaskEditFormView,
+  HomeView, HomeController, AboutView,
+  AdminMainController) {
 
   var BrowseRouter = Backbone.Router.extend({
 
@@ -30,7 +34,10 @@ define([
       'tasks/:id(/)'              : 'showTask',
       'tasks/:id/:action(/)'      : 'showTask',
       'profile(/)'                : 'showProfile',
-      'profile/:id(/)'            : 'showProfile'
+      'profile/:id(/)'            : 'showProfile',
+      'profile/:id(/)/:action'    : 'showProfile',
+      'admin(/)'                  : 'showAdmin',
+      'admin(/):action(/)'        : 'showAdmin'
     },
 
     data: { saved: false },
@@ -107,9 +114,23 @@ define([
       this.taskShowController = new TaskShowController({ model: model, router: this, id: id, action: action, data: this.data });
     },
 
-    showProfile: function (id) {
+    showProfile: function (id, action) {
       this.cleanupChildren();
-      this.profileShowController = new ProfileShowController({ id: id, data: this.data });
+      if (!action && id) {
+        if (id == 'edit') {
+          action = id;
+          id = window.cache.currentUser.id;
+        }
+      }
+      this.profileShowController = new ProfileShowController({ id: id, action: action, data: this.data });
+    },
+
+    showAdmin: function (action) {
+      this.cleanupChildren();
+      this.adminMainController = new AdminMainController({
+        el: "#container",
+        action: action
+      });
     }
 
   });

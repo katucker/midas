@@ -20,15 +20,16 @@
         "node-uuid": "1.4.x",
         "bcrypt": "0.7.7",
         "request": "2.x",
-        "gm": "~1.13.1",
-        "nodemailer": "0.6.0",
-        "email-templates": "0.1.1",
-        "git-rev": "*",
+        "gm": "~1.14.2",
+        "nodemailer": "0.6.x",
+        "email-templates": "~0.1.5",
+        "git-rev": "0.2.x",
         "sails-disk": "~0.9.0",
         "sails-postgresql": "~0.9.5"
     },
     "devDependencies": {
         "mocha": "*",
+        "chai": "*",
         "grunt-contrib-requirejs": "~0.4.1",
         "grunt-contrib-cssmin": "*"
     },

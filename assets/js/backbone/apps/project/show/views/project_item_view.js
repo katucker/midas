@@ -34,7 +34,7 @@ define([
       var data = {
         hostname: window.location.hostname,
         data: this.model.toJSON(),
-        user: window.cache.currentUser,
+        user: window.cache.currentUser || {},
         edit: this.edit
       };
 
@@ -104,6 +104,7 @@ define([
           url: "/api/file/create",
           dataType: 'text',
           acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+          formData: { 'type': 'image' },
           add: function (e, data) {
             $('#file-upload-progress-container').show();
             data.submit();
