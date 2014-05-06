@@ -5,8 +5,10 @@ define([
   'base_controller',
   'profile_model',
   'profile_show_view',
+  'profile_settings_view',
+  'json!login_config',
   'text!alert_template'
-], function ($, _, Backbone, BaseController, ProfileModel, ProfileView, AlertTemplate) {
+], function ($, _, Backbone, BaseController, ProfileModel, ProfileView, ProfileSettingsView, Login, AlertTemplate) {
 
   Application.Controller.Profile = BaseController.extend({
 
@@ -33,6 +35,18 @@ define([
 
       if (this.model) this.model.remove();
       this.model = new ProfileModel();
+
+      // prevent directly editing profiles when disabled
+      if ((Login.profile.edit === false) && (this.action == 'edit')) {
+        var data = {
+          alert: {
+            message: "<strong>Direct editing of profiles is disabled.</strong>  <a href=\"" + Login.profile.editUrl + "\" title=\"Edit Profile\">Click here to edit your profile</a>"
+          }
+        };
+        var template = _.template(AlertTemplate, data)
+        this.$el.html(template);
+        return;
+      }
       // var fetchId = null;
       // if (this.id && this.id != 'edit') { fetchId = this.id; }
       this.model.trigger("profile:fetch", this.routeId);
@@ -76,32 +90,35 @@ define([
           }
         }
         var template = _.template(AlertTemplate, data)
-        this.$el.html(template);
+        self.$el.html(template);
       });
     },
 
     initializeProfileViewInstance: function () {
       if (this.profileView) { this.profileView.cleanup(); }
-      // if ((this.action === 'edit') && (window.cache.currentUser) &&
-      //     (window.cache.currentUser.id !== this.model.toJSON().id) &&
-      //     (window.cache.currentUser.isAdmin !== true)) {
-      //   window.cache.userEvents.trigger("user:request:login", {
-      //     message: "You are not allowed to edit this profile",
-      //     disableClose: false
-      //   });
-      //   return;
-      // }
-      this.profileView = new ProfileView({
-        el: this.$el,
-        model: this.model,
-        routeId: this.routeId,
-        action: this.action,
-        data: this.data
-      }).render();
+      if (this.settingsView) { this.settingsView.cleanup(); }
+      if (this.action == 'settings') {
+        this.settingsView = new ProfileSettingsView({
+          el: this.$el,
+          model: this.model,
+          routeId: this.routeId,
+          action: this.action,
+          data: this.data
+        }).render();
+      } else {
+        this.profileView = new ProfileView({
+          el: this.$el,
+          model: this.model,
+          routeId: this.routeId,
+          action: this.action,
+          data: this.data
+        }).render();
+      }
     },
 
     cleanup: function() {
       if (this.profileView) { this.profileView.cleanup(); }
+      if (this.settingsView) { this.settingsView.cleanup(); }
       removeView(this);
     }
 
