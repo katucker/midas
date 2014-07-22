@@ -375,6 +375,7 @@ define([
         el: ".markdown-edit",
         id: 'bio',
         placeholder: 'Provide details on the office you work in, things you are interested in, background information, etc.',
+        title: 'Biography',
         rows: 6
       }).render();
     },
