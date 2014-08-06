@@ -121,6 +121,8 @@ define([
         // Set the user object and trigger the user login event
         window.cache.currentUser = success;
         window.cache.userEvents.trigger("user:login", success);
+        // Redirect to the about page immediately after registration to orient the new user.
+        Backbone.history.navigate("about", {trigger:true});
       }).fail(function (error) {
         var d = JSON.parse(error.responseText);
         self.$("#registration-error").html(d.message);
