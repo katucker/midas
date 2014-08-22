@@ -248,7 +248,7 @@ define([
       this.modalAlert = new ModalAlert({
         el: "#check-volunteer .modal-template",
         modalDiv: '#check-volunteer',
-        content: '<p>I understand it is my responsibility to confirm supervisor approval prior to committing to an opportunity.</p><p>Once you volunteer for an opportunity, you will not be able to cancel your commitment to volunteer.</p>',
+        content: "<p>Thanks for indicating your interest in completing this Opportunity. The Opportunity poster will be notified of your interest if you confirm you want to volunteer. The ball will then be in their court to reach out to you.</p><p>From this point forward, it's up to you and the Opportunity poster to determine whether you are indeed a good fit for the task and to work out the details of your working together.</p><p>If you'd like to ask any questions before committing to volunteer, please cancel this volunteer window and post the question in the Discussion section for the Opportunity.<p/><p>Please note that by agreeing to volunteer, you are also confirming your supervisor approves you working on the Opportunity.</p>",
         cancel: 'Cancel',
         submit: 'I Agree',
         callback: function (e) {
