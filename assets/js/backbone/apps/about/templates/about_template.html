@@ -1,6 +1,6 @@
-<style>
+﻿<style>
 h1, h2, h3, h4, h5 {
-	background-color:white;
+  background-color:white;
 }
 </style>
 <div class="container">
@@ -13,7 +13,7 @@ h1, h2, h3, h4, h5 {
 
 <h3>How does it work?  </h3>
 
-<p>FairTrade (Beta) allows Department staff to post small tasks (“Opportunities”) for other Department staff to complete. Do you have a hundred little things on your to-do list that you can’t seem to get to? Post them as Opportunities to this site: Describe the skillets required, the estimated time it’ll take for someone to complete it, and other information relevant to completing the task.</p>
+<p>FairTrade (Beta) allows Department staff to post small tasks (“Opportunities”) for other Department staff to complete. Do you have a hundred little things on your to-do list that you can’t seem to get to? Post them as Opportunities to this site: Describe the skillsets required, the estimated time it’ll take for someone to complete it, and other information relevant to completing the task.</p>
 
 <p>Maybe you seek a specific expertise, such as that related to 508 compliance or security. Or maybe you just need someone to transcribe a video or take notes during a conference call.</p>
 
@@ -23,11 +23,11 @@ h1, h2, h3, h4, h5 {
 
 <p>We released this tool early as an unfinished product (“beta”) intentionally. We think there’s a need for a platform like this, but frankly we’re not sure exactly how (and even if) this will work.   For example, we note overlaps with Yammer and other collaboration tools. </p>
 
-<p>We didn’t want to put forth too many resources for a final product only to find that it’s not very useful to staff.  We’re looking for Beta testers. Please reach out to read.Holman@hhs.gov if you’re interested in helping explore this area.</p>
+<p>We didn’t want to put forth too many resources for a final product only to find that it’s not very useful to staff.  We’re looking for Beta testers. Please reach out to Read.Holman@hhs.gov if you’re interested in helping explore this area.</p>
 
 <h3>What kinds of Opportunities can I post or find on the site? </h3>
 
-<p>Users can post all kinds of things for others to complete, from the very short and mundane tasks that can be completed in under an hour to the complex and critical tasks that are ongoing over the course of several month. </p>
+<p>Users can post all kinds of things for others to complete, from the very short and mundane tasks that can be completed in under an hour to the complex and critical tasks that are ongoing over the course of several months. </p>
 
 <p>Here are a few specific examples: Providing subject matter expertise and guidance; Testing a new tool or application; Participating on a task force; Borrowing a camera; Transcribing a video or speech; Conducting research; Designing a flyer.</p>
 
@@ -45,12 +45,25 @@ h1, h2, h3, h4, h5 {
 <h3>Who is the platform for?  </h3>
 
 <p>This is for Department staff looking for new ways to get things done. Some staff have a lot of items on their to-do list, things that can be posted to FairTrade (Beta) for others to complete. Others have fewer things on their to-do list or have skill sets and interests that can go beyond their particular office.
-Staff participating should have the approval of their Contractors are not able to participate. You have to be on the HHS Network in order to access the platform.
+Staff participating should have the approval of their Supervisors. Contractors are not able to participate. You have to be on the HHS Network in order to access the platform.
 </p>
 
 <h3>Great! How do i get started? </h3>
 
-<p>A user account is required to post and join Projects and Opportunities. <a href="#login-register">Register here.</a></p>
+<p>
+<% if (user) { %>
+Browse the <a href="/projects">Projects</a> or <a href="/tasks">Opportunities</a> already posted, and either contribute to the discussion of the ones that interest you or volunteer to help.
+</p>
+<p>
+Post your own Opportunity or start your own longer-term Project.
+</p>
+<p>
+Edit your <a href="/profile">Profile</a> to add contact information, select the skills you want others to know you have or the topics that interest you.
+</p>
+<% } else { %>
+You must be logged in to a user account to post or join Projects and Opportunities. <a href="/auth" class="login">Log in or Register here.</a>
+<% } %>
+</p>
 
 <h3>Wait… Where did HHS FairTrade (Beta) come from? Who built and is Administering the site? </h3>
 
