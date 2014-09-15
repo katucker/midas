@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# This is an init script for starting and stopping the Fair Trade application
+# under the fairtrade account. Copy this to /etc/init.d and run "chckconfig fairtrade on".
+#
+# chkconfig: 2345 68 32
+# description: Controls the Fair Trade application.
+#
+# For Red-Hat-based distributions such as Fedora, RHEL, CentOS.
+#
+### BEGIN INIT INFO
+# Provides: fairtrade
+# Required-Start: postgresql-9.2
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Controls the Fair Trade application.
+### END INIT INFO
+
+if [ -x /sbin/runuser ]
+then
+    SU=runuser
+else
+    SU=su
+fi
+
+# Edit as needed, if running from a different account than "fairtrade".
+$SU -l fairtrade -c "/home/fairtrade/fairtrade-ctl $*"

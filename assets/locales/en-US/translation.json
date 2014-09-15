@@ -1,0 +1,101 @@
+{
+  "app" : {
+    "name" : "Fair Trade",
+    "sponsor" : "IDEA Lab",
+    "sponsorDescription" : "an entity run out of the Office of the Deputy Secretary of HHS that is working towards a more modern and effective government"
+  },
+  "Project": "Work Group",
+  "Project_plural": "Work Groups",
+  "Project_indefinite": "a Work Group",
+  "Project_plural_indefinite": "some Work Groups",
+  "a_Project": "a Work Group",
+  "A_Project": "A Work Group",
+  "A_Project_Owner" : "A Work Group Owner",
+
+  "Task" : "Opportunity",
+  "Task_plural" : "Opportunities",
+  "Task_indefinite" : "an Opportunity",
+  "Task_plural_indefinite": "some Opportunities",
+  "a_Task" : "an Opportunity",
+  "A_Task" : "An Opportunity",
+  "A_Task_Owner" : "An Opportunity Owner",
+
+  "login_or_register" : "Log in or Register here.",
+
+  "org" : {
+    "acronym" : "HHS",
+    "name" : "Department of Health and Human Services"
+  },
+  "about": {
+    "header": "About $t(org.acronym) $t(app.name)",
+    "what" : {
+      "header": "What is $t(org.acronym) $t(app.name)?",
+      "content": [
+        "This website is a place to help connect $t(org.acronym) employees seeking resources and skills with $t(org.acronym) employees that can supply those resources and skills."
+      ]
+    },
+    "how" : {
+      "header" : "How does it work?",
+      "content" : [
+        "$t(app.name) allows staff to post work ($t(Task_plural)) for other staff to complete. Do you have a hundred little things on your to-do list that you can’t seem to get to? Post them as $t(Task_plural) to this site: Describe the skillets required, the estimated time it’ll take for someone to complete them, and other information relevant to completing the tasks.",
+        "Maybe you seek a specific expertise, such as that related to 508 compliance or security. Or maybe you just need someone to transcribe a video or take notes during a conference call.",
+        "But it's called $t(app.name) for a reason, if you post $t(Task_plural_indefinite) for others, you should also consider completing those posted by others. Have a slow Thursday afternoon? Search for $t(Task_plural_indefinite) that can be completed in an hour. Looking to expand your horizons and have the bandwidth to take on a longer-term effort? Find $t(Task_plural_indefinite) that are more complex or nuanced in nature. Or find $t(a_Project) that interests you and follow along."
+      ]
+    },
+    "why" : {
+      "header" : "Why is it in \"Beta\"?",
+      "content" : [
+        "We released this tool early as an unfinished product (\"beta\") intentionally. We think there’s a need for a platform like this, but frankly we are not sure exactly how (and even if) this will work. For example, we note overlaps with Yammer and other collaboration tools.",
+        "We didn't want to put forth too many resources for a final product only to find that it's not very useful to staff.  We're looking for beta testers. Please reach out to Read.Holman@hhs.gov if you're interested in helping explore this area."
+      ]
+    },
+    "scope" : {
+      "header" : "What kinds of $t(Task_plural) can I post or find on the site?",
+      "content" : [
+        "Users can post all kinds of things for others to complete, from the very short and mundane tasks that can be completed in under an hour to the complex and critical tasks that are ongoing over the course of several months.",
+        "Here are a few specific examples: Providing subject matter expertise and guidance; Testing a new tool or application; Participating on a task force; Borrowing a camera; Transcribing a video or speech; Conducting research; Designing a flyer."
+      ]
+    },
+    "glossary" : {
+      "header" : "What is the difference between $t(a_Project) and $t(a_Task)?",
+      "overview" : "In short: $t(Task_plural) are things to be done. $t(Project_plural) are collections of $t(Task_plural). Here is a larger glossary that spells it out a bit further:",
+      "task" : {
+        "definition" : " is a specific task or activity requesting resources and/or task completion. $t(Task_plural) are posted by people that are seeking resources. $t(Task_plural) get completed by users that can meet that need. Typically, once $t(a_Task) gets posted, it doesn’t change much until it has been assigned to someone, after which the $t(Task) is no longer available.",
+       "owner" : " creates a specific $t(Task) in need of resources and has the ability to edit the $t(Task)."
+      },
+      "project" : {
+        "definition" : " is a workspace for communicating and coordinating multiple $t(Task_plural) related to a larger effort. $t(Project_plural) tend to be longer-lived than $t(Task_plural) and get updated over the life-span of the effort.",
+        "owner" : " creates the $t(Project) and has the ability to edit and close the $t(Project) when all activities and $t(Task_plural) are completed."
+      }
+    },
+    "who" : {
+      "header" : "Who is the platform for?",
+      "content" : [
+        "This is for staff looking for new ways to get things done. Some staff have a lot of items on their to-do list, things that can be posted to $t(app.name) for others to complete. Others have fewer things on their to-do list or have skill sets and interests that can go beyond their particular office.",
+        "Staff participating must have the approval of their Supervisors. Contractors are not able to participate. You have to be on the $t(org.acronym) network in order to access the platform."
+      ]
+    },
+    "start" : {
+      "header" : "Great! How do i get started?",
+      "log" : {
+        "content": {
+          "p1" : "Browse the ",
+          "p2" : " or ",
+          "p3" : " already posted, and either contribute to the discussion of the ones that interest you or volunteer to help.",
+          "p4" : "Post your own $t(Task) or start your own longer-term $t(Project).",
+          "p5" : "Edit your ",
+          "p6" : " to add contact information, select the skills you want others to know you have or the topics that interest you."
+        }
+      },
+      "nolog" : {
+        "content" : {
+          "p1" : "You must be logged in to a user account to post or join $t(Project_plural) and $t(Task_plural)."
+        }
+      }
+    },
+    "where" : {
+      "header" : "Wait… Where did $t(org.acronym) $t(app.name) come from? Who built and is Administering the site?",
+      "content" : "$t(org.acronym) $t(app.name) is a project of the $t(org.acronym) $t(app.sponsor), $t(app.sponsorDescription). To learn more about the $t(org.acronym) $t(app.sponsor), visit "
+    }
+  }
+}

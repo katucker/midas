@@ -2,8 +2,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18n',
+  'json!i18n_config',
   'browse_app'
-], function ($, _, Backbone, BrowseApp) {
+], function ($, _, Backbone, i18n, i18nOption, BrowseApp) {
 
   var initialize = function () {
     var router, browse;
@@ -13,7 +15,10 @@ define([
     // by using the profile application as a starting point (very simple, 1 route).
     browse = BrowseApp.initialize();
 
-    Backbone.history.start({ pushState: true });
+    // Initialize the internationalization library and start Backbone when it's done initializing.
+    $.i18n.init(i18nOption, function(t) {
+      return Backbone.history.start({ pushState: true });
+    });
   } 
 
   return {
