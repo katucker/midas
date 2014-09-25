@@ -24,12 +24,17 @@ config/settings/sources.js
 config/settings/tags.js
 config/settings/emailTemplates.js
 config/settings/notifications.js
+assets/js/backbone/config/login.json
 
 # Ignore production files
 assets/prod/js
 assets/prod/css
 assets/prod/font
 assets/prod/fonts
+
+# Ignore vagrant & chef tmp files
+.vagrant/*
+chef/cookbooks/*
 
 # Ignore editor temp files
 *~
@@ -39,3 +44,6 @@ assets/prod/fonts
 .DS_STORE
 .tmp
 *.idea
+
+# ruby version manager
+.rvmrc

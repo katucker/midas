@@ -1,9 +1,4 @@
 {
-  "app" : {
-    "name" : "midas",
-    "sponsor" : "18F",
-    "sponsorDescription" : "an organization within the General Services Administration that builds effective, user-centric digital services focused on the interaction between government & the people it serves."
-   },
   "Project": "Project",
   "Project_plural": "Projects",
   "Project_indefinite": "a Project",
@@ -11,6 +6,8 @@
   "a_Project": "a Project",
   "A_Project": "A Project",
   "A_Project_Owner" : "A Project Owner",
+  "project" : "project",
+  "project_plural" : "projects",
 
   "Task" : "Task",
   "Task_plural" : "Tasks",
@@ -19,70 +16,35 @@
   "a_Task" : "a Task",
   "A_Task" : "A Task",
   "A_Task_Owner" : "A Task Owner",
+  "task" : "task",
+  "task_plural" : "tasks",
 
-  "login_or_register" : "Log in or Register here.",
+  "like" : "like",
+  "like_plural" : "likes",
 
-  "org" : {
-    "acronym" : "GSA",
-    "name" : "General Services Administration"
+  "volunteer" : "volunteer",
+  "volunteer_plural" : "volunteers",
+
+  "Browse" : "Browse",
+
+  "commonAPI" : {
+    "unsupported" : "Unsupported operation."
   },
-  "about": {
-    "header": "About $t(app.name)",
-    "what" : {
-      "header": "What is $t(app.name)?",
-      "content": [
-        "This website is a place to help connect Federal Employees seeking resources and skills with other Federal Employees that can supply those resources and skills."
-      ]
-    },
-    "how" : {
-      "header" : "How does it work?",
-      "content" : "$t(app.name) allows staff to post work ($t(Task_plural)) for other staff to complete. Do you have a hundred little things on your to-do list that you can’t seem to get to? Post them as $t(Task_plural) to this site: Describe the skillets required, the estimated time it’ll take for someone to complete them, and other information relevant to completing the work. Related $t(Task_plural) can be grouped together in a $t(Project) to ease coordinating the set of them."
-    },
-    "why" : {
-      "header" : "Why was $t(app.name) created?",
-      "content" : "$t(app.name) uses the concept of crowdsourcing to get more work done in less time and at less cost than earlier work processes used. Rather than contracting for a skill set you or your staff need but don't have, or worse yet, muddling through a task with resources lacking the needed skills, $t(app.name) lets you advertise the work you need done to a larger audience. If someone in another part of the organization has the skills to do your work, and the time to apply those skills, your work gets done faster than you could get a contract in place and at no additional cost to the organization."
-    },
-    "scope" : {
-      "header" : "What kinds of $t(Task_plural) can I post or find on the site?",
-      "content" : "Users can post all kinds of things for others to complete, from the very short and mundane tasks that can be completed in under an hour to the complex and critical tasks that are ongoing over the course of several months."
-    },
-    "glossary" : {
-      "header" : "What is the difference between $t(a_Project) and $t(a_Task)?",
-      "overview" : "In short: $t(Task_plural) are things to be done. $t(Project_plural) are collections of $t(Task_plural). Here is a larger glossary that spells it out a bit further:",
-      "task" : {
-        "definition" : " is a specific activity. $t(Task_plural) are posted by people that are seeking assistance. It should be clear when $t(a_Task) is considered \"done\". Each $t(Task) in $t(app.name) has an associated discussion area and can have files attached to share amongst the people working on the $t(Task).",
-       "owner" : " creates a specific $t(Task) in need of resources and has the ability to edit and close the $t(Task)."
-      },
-      "project" : {
-        "definition" : " is a collection of $t(Task_plural), typically all related to a larger effort. $t(A_Project) may be ongoing, with no clear end point. $t(Project_plural) have their own collaboration spaces for discussions and file sharing, in addition to the collaboration spaces for the individual $t(Task_plural) within the $t(Project_plural).",
-        "owner" : " creates the $t(Project) and has the ability to edit and close the $t(Project) when all activities and $t(Task_plural) are completed."
-      }
-    },
-    "who" : {
-      "header" : "Who is the platform for?",
-      "content" : "This is for staff looking for new ways to get things done. All Federal Employees are welcome to participate, as long as they have the approval of their Supervisors. Due to the open-ended nature of the $t(Project_plural) and $t(Task_plural) for which the application is intended, contractors are not able to participate."
-    },
-    "start" : {
-      "header" : "How do i get started?",
-      "log" : {
-        "content": {
-          "p1" : "Browse the ",
-          "p2" : " or ",
-          "p3" : " already posted, and either contribute to the discussion of the ones that interest you or volunteer to help.",
-          "p4" : "Post your own $t(Task) or start your own longer-term $t(Project).",
-          "p5" : "Edit your ",
-          "p6" : " to add contact information, select the skills you want others to know you have or the topics that interest you."
-        }
-      },
-      "nolog" : {
-        "content" : {
-          "p1" : "You must be logged in to a user account to post or join $t(Project_plural) and $t(Task_plural)."
-        }
-      }
-    },
-    "where" : {
-      "header" : "Where did $t(org.acronym) $t(app.name) come from?",
-      "content" : "$t(org.acronym) $t(app.name) is a project of the $t(org.acronym) $t(app.sponsor), $t(app.sponsorDescription). To learn more about $t(app.sponsor), visit "
+
+  "projectAPI" : {
+    "errMsg" : {
+      "lookup" : "'Error looking up $t(project).",
+      "lookup_plural" : "Error looking up $t(project_plural).",
+      "count" : "Error looking up $t(project) counts.",
+      "create" : "Error creating $t(project).",
+      "ownerStore" : "Error storing $t(project) owner."
+    }
+  },
+
+  "taskAPI" : {
+    "errMsg" : {
+      "likes" : "Error looking up $(task) $(like_plural).",
+      "volunteers" : "Error looking up $t(task) $t(volunteer_plural)."
     }
   }
 }
