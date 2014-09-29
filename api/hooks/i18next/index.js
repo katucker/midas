@@ -25,8 +25,7 @@ module.exports = function (sails) {
     // May be overridden in config/settings/i18next.js
     defaults : {
       i18next : {
-        resGetPath : '/assets/locales/__lng__/__ns__.json',
-        resSetPath : '/assets/locales/add/__lng__/__ns__.json'
+        resGetPath : '/assets/locales/__lng__/__ns__.json'
       }
     },
 
@@ -35,7 +34,30 @@ module.exports = function (sails) {
       before: {
 
         //Make the i18next module available to all response objects.
-        '/*': i18next.handle
+        '/*': i18next.handle,
+
+        //Capture the keys and default text for missing keys POSTed
+        //from the client. Route is hard-coded to simplify configuration.
+        //This should be sufficient since we only want to use this
+        //capability during development to easily seed the translation
+        //files with more keys.
+        'post /locales/add/:lng/:ns' : function(req,res,next) {
+          //Only save keys if running in the development environment.
+          if (process.env.NODE_ENV == 'development') {
+
+            var lng = req.param('lng');
+            var ns = req.param('ns');
+
+            sails.log("Adding to language ", lng, " namespace ", ns);
+            for (var key in req.body) {
+              sails.log("Adding key '", key, "' value: ", req.body[key]);
+              i18next.sync.postMissing(lng, ns, key, req.body[key]);
+            }
+
+            res.send('ok');
+          }
+          return next();
+        }
       }
     },
 
@@ -67,9 +89,6 @@ module.exports = function (sails) {
           if (ns in sails.config.i18next.config) {
             initOptions.ns = sails.config.i18next.config.ns;
           }
-          if (saveMissing in sails.config.i18next.config) {
-            initOptions.saveMissing = sails.config.i18next.config.saveMissing;
-          }
           if (useCookie in sails.config.i18next.config) {
             initOptions.useCookie = sails.config.i18next.config.useCookie;
           }
@@ -99,19 +118,20 @@ module.exports = function (sails) {
           initOptions.resGetPath =
             sails.config.appPath + sails.config.i18next.resGetPath;
         }
-        if (resSetPath in sails.config.i18next) {
-          // Assume the absolute path is compiled from the application path
-          // and the path specified in the settings for the server side.
-          // To Do: Check for existence of the file as specified, falling back
-          // to a relative path if needed.
-          initOptions.resSetPath =
-            sails.config.appPath + sails.config.i18next.resSetPath;
+        if (saveMissing in sails.config.i18next) {
+          initOptions.saveMissing = sails.config.i18next.saveMissing;
         }
         if (supportedLngs in sails.config.i18next) {
           initOptions.supportedLngs = sails.config.i18next.supportedLngs;
         }
       }
 
+      //Force the path for storing missing keys, only if we're
+      //running in the development environment.
+      if (process.env.NODE_ENV == 'development') {
+        initOptions.resSetPath = sails.config.appPath +
+          '/assets/locales/add/__lng__/__ns__.json';
+      }
       i18next.init(initOptions);
 
       return cb();

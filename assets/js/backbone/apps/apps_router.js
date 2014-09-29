@@ -10,6 +10,11 @@ define([
   var initialize = function () {
     var router, browse;
 
+    // Force the POST path to match the server configuration.
+    i18nOption.resPostPath = "/locales/add/__lng__/__ns__";
+    i18nOption.sendType = 'POST';
+    i18nOption.postAsync = true;
+
     // Initialize the internationalization library and start Backbone when it's done initializing.
     $.i18n.init(i18nOption, function(t) {
       // Here we are going to fire up all the routers for our app to listen

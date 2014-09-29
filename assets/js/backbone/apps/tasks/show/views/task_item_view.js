@@ -51,6 +51,7 @@ define([
       self.getTagData(self, function () {
         var compiledTemplate = _.template(TaskShowTemplate, self.data);
         self.$el.html(compiledTemplate);
+        self.$el.i18n();
         $("time.timeago").timeago();
         self.updateTaskEmail();
         self.model.trigger('task:show:render:done');
