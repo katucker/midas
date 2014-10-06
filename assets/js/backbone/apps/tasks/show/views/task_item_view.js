@@ -1,14 +1,16 @@
 define([
+  'jquery',
   'bootstrap',
   'underscore',
   'backbone',
   'utilities',
+  'json!ui_config',
   'async',
   'marked',
   'jquery_timeago',
   'base_view',
   'text!task_show_template'
-], function (Bootstrap, _, Backbone, utils, async, marked, TimeAgo, BaseView, TaskShowTemplate) {
+], function ($, Bootstrap, _, Backbone, utils, UIConfig, async, marked, TimeAgo, BaseView, TaskShowTemplate) {
 
   var TaskItemView = BaseView.extend({
 
@@ -49,6 +51,7 @@ define([
 
     render: function (self) {
       self.getTagData(self, function () {
+        self.data.ui = UIConfig;
         var compiledTemplate = _.template(TaskShowTemplate, self.data);
         self.$el.html(compiledTemplate);
         $("time.timeago").timeago();
@@ -59,12 +62,14 @@ define([
 
     updateTaskEmail: function() {
       var self = this;
+      var subject = $.t('share.subject', 'Check Out') + ' "' + self.model.attributes.title + '"';
       $.ajax({
-        url: '/api/email/makeURL?email=contactUserAboutTask&subject=Check Out "'+ self.model.attributes.title + '"' +
+        url: '/api/email/makeURL?email=contactUserAboutTask' +
+        '&subject=' + subject +
         '&opportunityTitle=' + self.model.attributes.title +
         '&opportunityLink=' + window.location.protocol + "//" + window.location.host + "" + window.location.pathname +
         '&opportunityDescription=' + (self.model.attributes.description || '') +
-        '&opportunityMadlibs=' + $('<div />', { html: self.$('#task-show-madlib-description').html() }).text().replace(/\s+/g, " "),
+        '&opportunityMadlibTags=' + JSON.stringify(self.data['madlibTags']),
         type: 'GET'
       }).done( function (data) {
         self.$('#email').attr('href', data);
@@ -104,4 +109,4 @@ define([
   });
 
   return TaskItemView;
-})
+});

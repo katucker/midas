@@ -4,6 +4,8 @@
  * @module    :: Controller
  * @description :: Contains logic for handling email requests. This will generate href strings.
  */
+var i18next = require('i18next');
+
 module.exports = {
   makeURL: function(req, res){
     var href = 'mailto:';
@@ -19,6 +21,7 @@ module.exports = {
       fields,
       function (err, html, text) {
         text = text.replace(/\r?\n/g, "%0D%0A");
+        text = i18next.translate(text);
         if (err) { return res.send(400, { message: 'Error generating email.' }); }
         // href string to be returned
         href = href + (fields.to ? fields.to : '') + '?' +

@@ -1,5 +1,31 @@
-Opportunity: <%- opportunityTitle %>
-Description: <%- opportunityDescription %>
-<%- opportunityMadlibs %>
-Your colleague wanted to let you know about this great opportunity to help a colleague. Click on the link to find out more.
-<%- opportunityLink  %>
+$t('share.leadin','I thought you might be interested in this $t("task")'):
+
+$t('Task'): <%- opportunityTitle %>
+$t('Description'): <%- opportunityDescription %>
+<% if (opportunityMadlibTags['task-people']) { %>
+Volunteers needed: <%= opportunityMadlibTags['task-people'][0].name %>
+<% } else { %>
+Volunteers needed: unspecified
+<% } %>
+<% if (opportunityMadlibTags['task-time-estimate']) { %>
+Estimated time required: <%= opportunityMadlibTags['task-time-estimate'][0].name %>
+<% } else { %>
+Estimated time required: unspecified
+<% } %>
+<% if (opportunityMadlibTags['task-length']) { %>
+Must be completed within: <%= opportunityMadlibTags['task-length'][0].name %>
+<% } else { %>
+Must be completed within: unspecified
+<% } %>
+<% if (opportunityMadlibTags.location) { %>
+Volunteers can be located: <% _.each(opportunityMadlibTags.location, function (s, i) { %>
+    <% if (i > 0) { %>
+,
+    <% } %>
+ <%= s.name %>
+  <% }) %>
+<% } else { %>
+Volunteers can be located: anywhere
+<% } %>
+
+You can learn more about this opportunity at: <%- opportunityLink  %>

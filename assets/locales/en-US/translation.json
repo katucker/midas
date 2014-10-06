@@ -27,13 +27,18 @@
 
   "Browse" : "Browse",
 
+  "share" : {
+    "subject" : "Opportunity to collaborate: ",
+    "leadin" : "I thought you might be interested in this $t('task')"
+  },
+
   "commonAPI" : {
     "unsupported" : "Unsupported operation."
   },
 
   "projectAPI" : {
     "errMsg" : {
-      "lookup" : "'Error looking up $t(project).",
+      "lookup" : "Error looking up $t(project).",
       "lookup_plural" : "Error looking up $t(project_plural).",
       "count" : "Error looking up $t(project) counts.",
       "create" : "Error creating $t(project).",

@@ -1,5 +1,57 @@
-<h1>Opportunity: <%- opportunityTitle  %></h1>
-<p>Description: <%- opportunityDescription  %></p>
-<p><%- opportunityMadlibs  %></p>
-<p>Your colleague wanted to let you know about this great opportunity to help a colleague. Click on the link to find out more.</p>
-<p><%- opportunityLink  %></p>
+<p>I thought you might be interested in this opportunity:</p>
+
+<table>
+<tr>
+  <td>Opportunity:</td>
+  <td><%- opportunityTitle  %></td>
+</tr>
+<tr>
+  <td>Description:</td>
+  <td><%- opportunityDescription  %></td>
+<tr>
+<tr>
+  <td>Volunteers needed:</td>
+  <td>
+    <% if (opportunityMadlibTags['task-people']) { %>
+      <%= opportunityMadlibTags['task-people'][0].name %>
+    <% } else { %>
+      unspecified
+    <% } %>
+  </td>
+<tr>
+  <td>Estimated time required: </td>
+  <td>
+    <% if (opportunityMadlibTags['task-time-estimate']) { %>
+      <%= opportunityMadlibTags['task-time-estimate'][0].name %>
+    <% } else { %>
+      unspecified
+    <% } %>
+  <td>
+</tr>
+<tr>
+  <td>Must be completed within:</td>
+  <td>
+    <% if (opportunityMadlibTags['task-length']) { %>
+      <%= opportunityMadlibTags['task-length'][0].name %>
+    <% } else { %>
+      unspecified
+    <% } %>
+  </td>
+</tr>
+<tr>
+  <td>Volunteers can be located:</td>
+  <td>
+    <% if (opportunityMadlibTags.location) { %>
+      <% _.each(opportunityMadlibTags.location, function (s, i) { %>
+        <% if (i > 0) { %>
+          ,
+        <% } %>
+        <%= s.name %>
+      <% }) %>
+    <% } else { %>
+      anywhere
+    <% } %>
+  </td>
+</tr>
+</table>
+<p>You can learn more about this opportunity at: <%- opportunityLink  %></p>

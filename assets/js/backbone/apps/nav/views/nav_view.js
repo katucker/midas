@@ -3,14 +3,12 @@ define([
   'underscore',
   'backbone',
   'utilities',
-  'i18n',
   'json!ui_config',
   'json!login_config',
   'login_controller',
   'text!nav_template'
 ], function ($, _, Backbone, utils, 
-            i18n, UIConfig, 
-            Login, LoginController, NavTemplate) {
+            UIConfig, Login, LoginController, NavTemplate) {
 
   var NavView = Backbone.View.extend({
 
