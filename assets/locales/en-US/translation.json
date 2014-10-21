@@ -1,4 +1,6 @@
 {
+  "Description" : "Description",
+
   "Project": "Project",
   "Project_plural": "Projects",
   "Project_indefinite": "a Project",
