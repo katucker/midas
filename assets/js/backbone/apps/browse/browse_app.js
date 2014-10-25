@@ -12,15 +12,13 @@ define([
   'task_model',
   'task_show_controller',
   'task_edit_form_view',
-  'home_view',
+  'admin_main_controller',
   'home_controller',
   'about_view',
-  'admin_main_controller'
 ], function ($, _, Backbone, utils, NavView, FooterView, BrowseListController,
   ProjectModel, ProjectShowController, ProfileShowController, TaskModel,
-  TaskShowController, TaskEditFormView,
-  HomeView, HomeController, AboutView,
-  AdminMainController) {
+  TaskShowController, TaskEditFormView, AdminMainController, HomeController,
+  AboutView) {
 
   var BrowseRouter = Backbone.Router.extend({
 
@@ -59,19 +57,13 @@ define([
       if (this.projectShowController) { this.projectShowController.cleanup(); }
       if (this.profileShowController) { this.profileShowController.cleanup(); }
       if (this.taskShowController) { this.taskShowController.cleanup(); }
+      if (this.homeController) { this.homeController.cleanup(); }
       this.data = { saved: false };
     },
 
     showHome: function () {
       this.cleanupChildren();
-      this.homeView = new HomeView({
-        el: '#home'
-      }).render();
-      this.browseListController = new BrowseListController({
-        el: '#container',
-        target: 'projects',
-        data: this.data
-      });
+      this.homeController = new HomeController({target: 'home', el: '#container', router: this, data: this.data });
     },
   
     showAbout: function () {

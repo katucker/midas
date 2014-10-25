@@ -1,11 +1,14 @@
 define([
   'jquery',
-  'async',
   'underscore',
   'backbone',
+  'i18n',
   'utilities',
+  'json!ui_config',
+  'async',
   'text!profile_activity_template'
-], function ($, async, _, Backbone, utils, ActTemplate) {
+], function ($,  _, Backbone, i18n, utils, UIConfig,
+             async, ActTemplate) {
 
   var ProfileActivityView = Backbone.View.extend({
 
@@ -23,10 +26,15 @@ define([
         return new Date(b.createdAt) - new Date(a.createdAt);
       });
       var data = {
+        ui: UIConfig,
         target: this.options.target,
+        targetFriendly: i18n.t(this.options.target),
+        targetsFriendly: i18n.t(this.options.target + '_plural'),
+        targetCapitalized: this.options.target.charAt(0).toUpperCase() + this.options.target.slice(1),
         data: results,
         count: {}
       };
+
       for (var i in this.options.data) {
         if (_.isUndefined(data.count[this.options.data[i].state])) {
           data.count[this.options.data[i].state] = 1;
@@ -36,6 +44,7 @@ define([
       }
       var template = _.template(ActTemplate, data);
       this.$el.html(template);
+      this.$el.i18n();
 
       return this;
     },

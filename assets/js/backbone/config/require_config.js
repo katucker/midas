@@ -27,6 +27,12 @@ require.config({
     'async'                     : '../../vendor/async/lib/async',
     'marked'                    : '../../vendor/marked/lib/marked',
     'autolinker'                : '../../vendor/autolinker/dist/Autolinker',
+    'i18n'                      : '../../vendor/i18next/i18next.amd.withJQuery',
+
+    // ---------
+    // Internationalization configuration for the client side.
+    // ---------
+    'i18n_config'               : '../config/i18n.json',
 
     // ---------
     //= Mixins
@@ -55,6 +61,11 @@ require.config({
     'base_view'                 : '../base/base_view',
 
     // ----------
+    //= UI Config
+    // ----------
+    'ui_config'              : '../config/ui.json',
+
+    // ----------
     //= Navigation
     // ----------
     'nav_view'                  : '../apps/nav/views/nav_view',
@@ -65,13 +76,6 @@ require.config({
     // ----------
     'footer_view'               : '../apps/footer/views/footer_view',
     'footer_template'           : '../apps/footer/templates/footer_template.html',
-	
-    // ----------
-    //= Home
-    // ----------
-    'home_view'               : '../apps/home/views/home_view',
-    'home_template'           : '../apps/home/templates/home_template.html',
-    'home_controller'          : '../apps/home/controllers/home_controller',
 	
     // ----------
     //= About
@@ -88,6 +92,13 @@ require.config({
     'login_template'            : '../apps/login/templates/login_template.html',
     'login_password_template'   : '../apps/login/templates/login_password_template.html',
     'login_controller'          : '../apps/login/controllers/login_controller',
+
+    // ----------
+    //= Home
+    // ----------
+    'home_controller'           : '../apps/home/controllers/home_controller',
+    'home_view'                 : '../apps/home/views/home_view',
+    'home_template'             : '../apps/home/templates/home_view_template.html',
 
     // ----------
     //= Browse
@@ -143,6 +154,8 @@ require.config({
     'task_show_controller'      : '../apps/tasks/show/controllers/task_show_controller',
     'task_edit_form_view'       : '../apps/tasks/edit/views/task_edit_form_view',
     'task_edit_form_template'   : '../apps/tasks/edit/templates/task_edit_form_template.html',
+    'volunteer_supervisor_notify_template' : '../apps/tasks/show/templates/volunteer_supervisor_notify_template.html',
+    'volunteer_text_template'   : '../apps/tasks/show/templates/volunteer_text_template.html',
 
     // ----------
     //= Events
@@ -208,6 +221,9 @@ require.config({
     'admin_tag_view'            : '../apps/admin/views/admin_tag_view',
     'admin_tag_template'        : '../apps/admin/templates/admin_tag_template.html',
     'admin_paginate'            : '../apps/admin/templates/admin_paginate.html',
+    'admin_dashboard_view'      : '../apps/admin/views/admin_dashboard_view',
+    'admin_dashboard_template'  : '../apps/admin/templates/admin_dashboard_template.html',
+    'admin_dashboard_table'     : '../apps/admin/templates/admin_dashboard_table.html',
 
     // ----------
     //= Components
@@ -221,7 +237,8 @@ require.config({
     'alert_template'            : '../components/alert_template.html',
     'markdown_editor'           : '../components/markdown_editor',
     'markdown_editor_template'  : '../components/markdown_editor_template.html',
-    'autocomplete'              : '../mixins/autocomplete'
+    'autocomplete'              : '../mixins/autocomplete',
+    'tag_factory'               : '../components/tag_factory'
   },
 
   shim: {
