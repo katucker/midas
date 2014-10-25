@@ -1,0 +1,11 @@
+{
+  "project": {
+    "show": true
+  },
+  "supervisorEmail": {
+	  "useSupervisorEmail": false
+  },
+  "home": {
+    "logged_in_path": "/projects"
+  }
+}

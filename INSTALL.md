@@ -1,7 +1,44 @@
 Installation
 =====
 
-## Mac OSX
+## Vagrant
+
+Using vagrant is a quick and easy way to get a local midas instance up and running on a virtual machine. We use [Chef](http://www.getchef.com/chef/) for automated deployment, which can also be used for deploying to cloud servers.
+
+Install:
+* [Vagrant](https://www.vagrantup.com/downloads)
+* [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+* [Chef Development Kit](http://downloads.getchef.com/chef-dk)
+
+Clone the git repository:
+
+     git clone https://github.com/18F/midas.git
+     cd midas
+     git submodule update --init
+
+Additonal plugins:
+
+     vagrant plugin install vagrant-berkshelf
+     vagrant plugin install vagrant-omnibus
+
+Startup the virtual machine:
+
+     vagrant up
+
+If you are modifying vagrant or chef setup, then you can configure to pull from your own repo by overriding attributes in your local `chef/nodes/localhost.json` adding:
+```
+  "midas": {
+    "git_repo": "https://github.com/myrepo/midas.git",
+    "git_branch": "devel-mybranch"
+  }
+```
+
+go to [http://localhost:8080/](http://localhost:8080/) to see Midas running on your local virtual machine
+
+## Step by Step Installation
+The following installation steps for Mac, Linux, and Windows can be used for setting up a development or production environment manually.
+
+### Mac OSX
 The instructions have been tested on 10.9.2, but earlier versions likely work.  Also, to follow these steps you will need:
 * the popular [brew](http://brew.sh/) package manager
 * XCode (free via Mac AppStore)
@@ -9,9 +46,12 @@ The instructions have been tested on 10.9.2, but earlier versions likely work.  
 In the Terminal:
 
     brew install postgresql
-    brew install graphicsmagick 
+    brew install graphicsmagick
 
-Note instructions to start postgres manually or st startup, if desired
+When Homebrew is done installing Postgres, follow the instructions at the end
+to start Postgres.
+
+Next, create the `midas` database:
 
     initdb /usr/local/var/postgresql
     createdb midas
@@ -33,21 +73,21 @@ Then back to the command-line:
     npm install
     npm link
 
-Then follow platform-independent steps below starting at [clone the git repository](#clone-the-git-repository)
+Then follow platform-independent steps below starting at [clone the git repository](#clone-the-git-repository).
 
 
-## Linux (Ubuntu 12.04 LTS)
+### Linux (Ubuntu 12.04 LTS)
 
-### Set your system's timezone to UTC
+#### Set your system's timezone to UTC
 
      sudo echo "UTC" | sudo tee /etc/timezone
      sudo dpkg-reconfigure --frontend noninteractive tzdata
 
-### Get prerequisite packages
+#### Get prerequisite packages
 
      sudo apt-get install -y python-software-properties python g++ make git
 
-### Install Postgres 9.2+ and remove any Ubuntu installed earlier version
+#### Install Postgres 9.2+ and remove any Ubuntu installed earlier version
 
      sudo add-apt-repository -y ppa:pitti/postgresql
      sudo apt-get update
@@ -76,31 +116,31 @@ AND modify `pg_hba.conf`:
 
      # IPv4 local connections:
      -host    all             all             127.0.0.1/32            md5
-     +host    all             all             0.0.0.0/0               md5
+     +hostssl    all             all             0.0.0.0/0               md5
 
-### Create the database
+#### Create the database
 
      sudo -u postgres createdb midas
      sudo -u postgres psql -c "CREATE USER midas WITH PASSWORD 'midas';"
      sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE midas to midas;"
      sudo -u postgres psql -c "ALTER SCHEMA public OWNER TO midas;" midas
 
-### Install node.js
+#### Install node.js
 
      sudo add-apt-repository -y ppa:chris-lea/node.js
      sudo apt-get update
      sudo apt-get install nodejs
 
-### Install GraphicsMagick
+#### Install GraphicsMagick
 
      sudo apt-get install graphicsmagick
 
-### Clone Forked Libraries
+#### Clone Forked Libraries
 
-This project uses forked repositories and libaries, which you will
-need to `npm link` in order for everything to function properly.
-
-[sails-postgresql](https://github.com/Innovation-Toolkit/sails-postgresql). Forked to provide soft deletes and support binary objects.
+This project uses a forked version of
+[sails-postgresql](https://github.com/Innovation-Toolkit/sails-postgresql) to
+provide soft deletes and support for binary objects. Clone it and run the
+commands below to set everything up properly.
 
      git clone https://github.com/Innovation-Toolkit/sails-postgresql.git
      cd sails-postgresql
@@ -108,18 +148,18 @@ need to `npm link` in order for everything to function properly.
      npm install
      sudo npm link
 
-### Clone the git repository.
+#### Clone the git repository.
 
      git clone https://github.com/18F/midas.git
      cd midas
      git submodule update --init
 
-### Install global node packages
+#### Install global node packages
 
      sudo npm install -g grunt-cli
      sudo npm install -g forever
 
-### Install midas node packages (from the midas git folder)
+#### Install midas node packages (from the midas git folder)
 
 Important: first link in the forked sails-postgresql
 
@@ -129,30 +169,79 @@ Then run the normal npm package installer
 
      npm install
 
-### Copy the main settings files
+#### Copy the main settings files
+
+From the root of the midas directory:
 
      cd config
      cp local.ex.js local.js
 
-### Copy the backend module configuration files
+#### Copy the backend module configuration files
+
+From the root of the midas directory:
 
      cd config/settings
      for file in *.ex.js; do cp "$file" "${file/ex./}"; done
 
+#### Copy the client configuration files
 
-### Optional: Edit the configuration files
+From the root of the midas directory:
 
-It is not necessary to edit any config files to run the demo locally.  You may optionally edit the config files that you made copies of above, or the front-end configuration:
+     cd assets/js/backbone/config/
+     cp login.ex.json login.json
+
+#### Optional: Edit the configuration files
+
+It is not necessary to edit any config files to run the demo locally.  You may optionally edit the config files that you made copies of above, or the front-end configuration (from the root directory):
 
      cd assets/js/backbone/config
      vi tag.js
-     vi login.js
+     vi login.json
 
 `tag.js` specifies the tags that the frontend understands and stores in the backend.
 
-`login.js` specifies the login options available on the frontend, and must have a corresponding backend component or configuration enabled (see `config/settings/auth.ex.js`).
+`login.json` specifies the login options available on the frontend, and must have a corresponding backend component or configuration enabled (see `config/settings/auth.ex.js`).
 
-### Compile production JS and CSS (from the midas git folder)
+#### Setup the database
+From the root of the midas directory, initialize the database:
+
+     make init
+
+If you'd like to include a sample project, also run:
+
+     make demo
+
+Now you are ready to rock!
+
+---------------------------------------
+
+## For development
+
+Run the tests (all should pass)
+
+    make test
+
+Run the server
+
+    sails lift
+
+If you get `command not found: sails`, install sails manually:
+
+    npm install sails -g
+
+Then try running the server:
+
+    sails lift
+
+
+Go to [http://localhost:1337](http://localhost:1337) to see the app
+
+Check out the [Contributor's Guide](CONTRIBUTING.md) for next steps
+
+
+## For production
+
+#### Compile production JS and CSS (from the midas git folder)
 
      make build
 
@@ -160,19 +249,11 @@ Alternatively, you can also run:
 
      grunt build
 
-### Initialize the database
+#### Initialize the database
 
 The database needs to be populated with the tag defaults for your application's configuration.
 
 Edit the configuration file at `test/init/init/config.js` to match your tags in `assets/js/backbone/components/tag.js`
-
-Then initialize the database with:
-
-     make init
-
-If you'd like to include a sample project, also run:
-
-     make demo
 
 ### Start the forever server (from the midas git folder)
 
@@ -182,7 +263,7 @@ This will run the application server on port 1337
 
 You can now access the server at `http://localhost:1337`
 
-### Optional: install nginx
+#### Optional: install nginx
 
      sudo add-apt-repository -y ppa:nginx/stable
      sudo apt-get update
@@ -196,9 +277,9 @@ Configure nginx with the files in the tools folder.  Use the SSL config file if 
 
 With the application server running and nginx running, you should now be able to access the application at `http://localhost`
 
-## Windows (Windows 2008 Server)
+### Windows (Windows 2008 Server)
 
-### Install Visual C++ 2008 x64 or x86 Redistributable Package
+#### Install Visual C++ 2008 x64 or x86 Redistributable Package
 
 [Runtime 64](http://www.microsoft.com/en-us/download/details.aspx?id=15336)
      or
@@ -206,7 +287,7 @@ With the application server running and nginx running, you should now be able to
 
 Reboot server once finished
 
-### Install/Configure Postgres 9.2+ via windows msi installer
+#### Install/Configure Postgres 9.2+ via windows msi installer
 
 [PostgreSQL](http://www.postgresql.org/download/windows/`)
 
@@ -216,17 +297,17 @@ Open pgAdmin
 
      Create database 'midas', user account 'midas' with password 'midas', and assign user 'midas' full rights to administer DB 'midas'
 
-### Install Node.js via Windows MSI, select all available add-ons
+#### Install Node.js via Windows MSI, select all available add-ons
 
 [Node.js](http://nodejs.org/download/`)
 
-### Install GraphicsMagick
+#### Install GraphicsMagick
 
 [GraphicsMagick](ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/windows/`)
 
 Select Q8 version along with latest corresponding to 32 bit vs. 64 bit OS
 
-### Set System Path Variables
+#### Set System Path Variables
 
 Go to Control Panel -> System -> Advanced System Settings -> Environment Variables
 Find "Path" Variable in System Variables table and double click to edit it. Make sure it contains all of the following parts (in 	addition to anything else) separated by a semi-colon.

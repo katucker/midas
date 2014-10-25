@@ -2,17 +2,19 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18n',
   'utilities',
   'login_password_view',
   'text!login_template',
   'modal_component'
-], function ($, _, Backbone, utils, LoginPasswordView, LoginTemplate, ModalComponent) {
+], function ($, _, Backbone, i18n, utils, LoginPasswordView, LoginTemplate, ModalComponent) {
 
   var LoginView = Backbone.View.extend({
 
     events: {
       'click .oauth-link'              : 'link',
       'keyup #rusername'               : 'checkUsername',
+      'change #rusername'              : 'checkUsername',
       'click #rusername-button'        : 'clickUsername',
       'keyup #rpassword'               : 'checkPassword',
       'blur #rpassword'                : 'checkPassword',
@@ -33,6 +35,7 @@ define([
       };
       var template = _.template(LoginTemplate, data);
       this.$el.html(template);
+      this.$el.i18n();
       this.loginPasswordView = new LoginPasswordView({
         el: this.$(".password-view")
       }).render();

@@ -11,8 +11,11 @@ define([
   'tag_show_view',
   'modal_component',
   'modal_alert',
-  'task_edit_form_view'
-], function (Bootstrap, _, Backbone, Popovers, utils, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, ModalComponent, ModalAlert, TaskEditFormView) {
+  'task_edit_form_view',
+  'json!ui_config',
+  'text!volunteer_supervisor_notify_template',
+  'text!volunteer_text_template'
+], function (Bootstrap, _, Backbone, Popovers, utils, BaseView, CommentListController, AttachmentView, TaskItemView, TagShowView, ModalComponent, ModalAlert, TaskEditFormView, UIConfig, VolunteerSupervisorNotifyTemplate, VolunteerTextTemplate) {
 
   var popovers = new Popovers();
 
@@ -21,6 +24,8 @@ define([
     el: "#container",
 
     events: {
+      'change .validate'                : 'v',
+      'keyup .validate'                 : 'v',
       'click #task-edit'                : 'edit',
       'click #task-view'                : 'view',
       "click #like-button"              : 'like',
@@ -38,6 +43,10 @@ define([
 
       this.initializeTaskItemView();
       this.initializeChildren();
+
+      //load user settings so they are available as needed
+      this.getUserSettings(window.cache.currentUser);
+
     },
 
     initializeEdit: function () {
@@ -179,6 +188,10 @@ define([
       });
     },
 
+    v: function (e) {
+      return validate(e);
+    },
+
     edit: function (e) {
       if (e.preventDefault) e.preventDefault();
       this.initializeEdit();
@@ -231,6 +244,67 @@ define([
         });
       }
     },
+    getUserSettings: function (userId) {
+      //does this belong somewhere else?
+
+      $.ajax({
+        url: '/api/usersetting/'+userId,
+        type: 'GET',
+        dataType: 'json'
+      })
+      .success(function(data){
+        _.each(data,function(setting){
+          //save active settings to the current user object
+          if ( setting.isActive ){
+            window.cache.currentUser[setting.key]=setting;
+          }
+        });
+      });
+    },
+
+    deleteUserSettingByKey: function(settingKey) {
+      //this function expects the entire row from usersetting in the form
+      //     window.cache.currentUser[settingKey] = {}
+      var self = this;
+
+      //if not set skip
+      var targetId =  ( window.cache.currentUser[settingKey] ) ? window.cache.currentUser[settingKey].id : null ;
+
+      if ( targetId ){
+        $.ajax({
+          url: '/api/usersetting/'+targetId,
+          type: 'DELETE',
+          dataType: 'json'
+        })
+      }
+
+    },
+
+    saveUserSettingByKey: function(userId, options) {
+      //this function expects the entire row from usersetting in the form
+      //     window.cache.currentUser[settingKey] = {}
+      var self = this;
+
+      //are values the same, stop
+      if ( options.newValue == options.oldValue ) { return true; }
+
+      //if delete old is set, delete exisitng value
+      //   default is delete
+      if ( !options.deleteOld ){
+        self.deleteUserSettingByKey(options.settingKey);
+      }
+
+      $.ajax({
+          url: '/api/usersetting/',
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            userId: userId,
+            key: options.settingKey,
+            value: options.newValue
+          }
+        });
+    },
 
     volunteer: function (e) {
       if (e.preventDefault) e.preventDefault();
@@ -245,13 +319,30 @@ define([
         modalTitle: "Do you want to volunteer?"
       }).render();
 
+      if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
+        //not assigning as null because null injected into the modalContent var shows as a literal value
+        //    when what we want is nothing if value is null
+        var supervisorEmail = ( window.cache.currentUser.supervisorEmail ) ? window.cache.currentUser.supervisorEmail.value  : "";
+        var supervisorName = ( window.cache.currentUser.supervisorName ) ? window.cache.currentUser.supervisorName.value : "";
+        var validateBeforeSubmit = true;
+        var modalContent = _.template(VolunteerSupervisorNotifyTemplate,{supervisorEmail: supervisorEmail,supervisorName: supervisorName});
+      } else {
+        validateBeforeSubmit = false;
+        var modalContent = _.template(VolunteerTextTemplate,{});
+      }
+
       this.modalAlert = new ModalAlert({
         el: "#check-volunteer .modal-template",
         modalDiv: '#check-volunteer',
-        content: "<p>Thanks for indicating your interest in completing this Opportunity. The Opportunity poster will be notified of your interest if you confirm you want to volunteer. The ball will then be in their court to reach out to you.</p><p>From this point forward, it's up to you and the Opportunity poster to determine whether you are indeed a good fit for the task and to work out the details of your working together.</p><p>If you'd like to ask any questions before committing to volunteer, please cancel this volunteer window and post the question in the Discussion section for the Opportunity.<p/><p>Please note that by agreeing to volunteer, you are also confirming your supervisor approves you working on the Opportunity.</p>",
+        content: modalContent,
         cancel: 'Cancel',
         submit: 'I Agree',
+        validateBeforeSubmit: validateBeforeSubmit,
         callback: function (e) {
+          if ( UIConfig.supervisorEmail.useSupervisorEmail ) {
+            self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorEmail",newValue: $('#userSuperVisorEmail').val(),oldValue: supervisorEmail});
+            self.saveUserSettingByKey(window.cache.currentUser.id,{settingKey:"supervisorName",newValue: $('#userSuperVisorName').val(),oldValue: supervisorName});
+          }
           // user clicked the submit button
           $.ajax({
             url: '/api/volunteer/',

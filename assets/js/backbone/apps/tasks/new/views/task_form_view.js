@@ -4,24 +4,30 @@ define([
     'underscore',
     'backbone',
     'async',
+    'i18n',
     'utilities',
     'markdown_editor',
     'tasks_collection',
-    'text!task_form_template'
-], function ($, Bootstrap, _, Backbone, async, utilities, MarkdownEditor, TasksCollection, TaskFormTemplate) {
+    'text!task_form_template',
+    'tag_factory'
+], function ($, Bootstrap, _, Backbone, async, i18n, utilities, MarkdownEditor, TasksCollection, TaskFormTemplate, TagFactory) {
 
   var TaskFormView = Backbone.View.extend({
 
     el: "#task-list-wrapper",
 
     events: {
-      "blur .validate"        : "v",
+      "change .validate"        : "v",
       "change #task-location" : "locationChange"
     },
 
     initialize: function (options) {
       this.options = _.extend(options, this.defaults);
       this.tasks = this.options.tasks;
+      this.tagFactory = new TagFactory();
+      this.data = {};
+      this.data.newTag = {};
+      this.data.newItemTags = [];
       this.initializeSelect2Data();
       this.initializeListeners();
     },
@@ -51,50 +57,91 @@ define([
     initializeListeners: function() {
       var self = this;
 
-      this.listenTo(this.tasks, "task:save:success", function (taskId) {
+      _.extend(this, Backbone.Events);
 
-        var addTag = function (tag, done) {
-          if (!tag || !tag.id) return done();
-          // if (tag.tagId) return done();
+      self.on('newTagSaveDone',function (){
 
-          var tagMap = {
-            taskId: taskId,
-            tagId: tag.id
+        tags         = [];
+        var tempTags = [];
+
+        //get newly created tags from big three types
+        _.each(self.data.newItemTags, function(newItemTag){
+          tags.push(newItemTag);
+        });
+
+        tempTags.push.apply(tempTags,self.$("#task_tag_topics").select2('data'));
+        tempTags.push.apply(tempTags,self.$("#task_tag_skills").select2('data'));
+        if (self.$("#task-location").select2('data').id == 'true') {
+          tempTags.push.apply(tempTags,self.$("#task_tag_location").select2('data'));
+        }
+
+        //see if there are any previously created big three tags and add them to the tag array
+        _.each(tempTags,function(tempTag){
+            if ( tempTag.id !== tempTag.name ){
+            tags.push(tempTag);
           }
+        });
 
-          $.ajax({
-            url: '/api/tag',
-            type: 'POST',
-            data: tagMap,
-            success: function (data) {
-              done();
-            },
-            error: function (err) {
-              done(err);
-            }
-          });
-        };
-
-        // Gather tags for submission after the task is created
-        tags = [];
-        tags.push.apply(tags, self.$("#topics").select2('data'));
-        tags.push.apply(tags, self.$("#skills").select2('data'));
+        //existing tags not part of big three
         tags.push(self.$("#skills-required").select2('data'));
         tags.push(self.$("#people").select2('data'));
         tags.push(self.$("#time-required").select2('data'));
         tags.push(self.$("#time-estimate").select2('data'));
         tags.push(self.$("#length").select2('data'));
 
-        if (self.$("#task-location").select2('data').id == 'true') {
-          tags.push.apply(tags, self.$("#location").select2('data'));
-        }
+        async.forEach(
+          tags,
+          function(tag, callback){
+            //diffAdd,self.model.attributes.id,"taskId",callback
+            return self.tagFactory.addTag(tag,self.tempTaskId,"taskId",callback);
+          },
+          function(err){
+            self.model.trigger("task:modal:hide");
+            self.model.trigger("task:tags:save:success", err);
+          }
+        );
+      });
 
-        async.each(tags, addTag, function (err) {
-          self.model.trigger("task:modal:hide");
-          return self.model.trigger("task:tags:save:success", err);
-        });
+
+      this.listenTo(this.tasks,"task:save:success", function (taskId){
+        //the only concern here is to add newly created tags which is only available in the three items below
+        //
+
+        self.tempTaskId = taskId;
+
+        var newTags = [];
+
+        newTags = newTags.concat(self.$("#task_tag_topics").select2('data'),self.$("#task_tag_skills").select2('data'),self.$("#task_tag_location").select2('data'));
+
+        async.forEach(
+          newTags,
+          function(newTag, callback) {
+            return self.tagFactory.addTagEntities(newTag,self,callback);
+          },
+          function(err) {
+            if (err) return next(err);
+            self.trigger("newTagSaveDone");
+          }
+        );
 
       });
+    },
+
+    getTagsFromPage: function () {
+
+      // Gather tags for submission after the task is created
+      tags = {
+        topic: this.$("#task_tag_topics").select2('data'),
+        skill: this.$("#task_tagskills").select2('data'),
+        location: this.$("#task_tag_location").select2('data'),
+        'task-skills-required': [ this.$("#skills-required").select2('data') ],
+        'task-people': [ this.$("#people").select2('data') ],
+        'task-time-required': [ this.$("#time-required").select2('data') ],
+        'task-time-estimate': [ this.$("#time-estimate").select2('data') ],
+        'task-length': [ this.$("#length").select2('data') ]
+      };
+
+      return tags;
     },
 
     render: function () {
@@ -105,6 +152,7 @@ define([
 
       // Important: Hide all non-currently opened sections of wizard.
       this.$("section:not(.current)").hide();
+      this.$el.i18n();
 
       // Return this for chaining.
       return this;
@@ -128,80 +176,10 @@ define([
     initializeSelect2: function () {
       var self = this;
 
-      var formatResult = function (obj, container, query) {
-        return obj.name;
-      };
+      self.tagFactory.createTagDropDown({type:"skill",selector:"#task_tag_skills",width: "100%"});
+      self.tagFactory.createTagDropDown({type:"topic",selector:"#task_tag_topics",width: "100%"});
+      self.tagFactory.createTagDropDown({type:"location",selector:"#task_tag_location",width: "100%"});
 
-      // ------------------------------ //
-      //  DROP DOWNS REQUIRING A FETCH  //
-      // ------------------------------ //
-      self.$("#skills").select2({
-        placeholder: "Start typing to select a skill.",
-        multiple: true,
-        // this width setting is a hack to prevent placeholder from getting cut off
-        width: "556px",
-        formatResult: formatResult,
-        formatSelection: formatResult,
-        ajax: {
-          url: '/api/ac/tag',
-          dataType: 'json',
-          data: function (term) {
-            return {
-              type: 'skill',
-              q: term
-            };
-          },
-          results: function (data) {
-            return { results: data }
-          }
-        }
-      });
-
-      // Topics select 2
-      self.$("#topics").select2({
-        placeholder: "Start typing to select a topic.",
-        multiple: true,
-        // this width setting is a hack to prevent placeholder from getting cut off
-        width: "556px",
-        formatResult: formatResult,
-        formatSelection: formatResult,
-        ajax: {
-          url: '/api/ac/tag',
-          dataType: 'json',
-          data: function (term) {
-            return {
-              type: 'topic',
-              q: term
-            };
-          },
-          results: function (data) {
-            return { results: data }
-          }
-        }
-      });
-
-      // Topics select 2
-      self.$("#location").select2({
-        placeholder: "Start typing to select a location.",
-        multiple: true,
-        // this width setting is a hack to prevent placeholder from getting cut off
-        width: "556px",
-        formatResult: formatResult,
-        formatSelection: formatResult,
-        ajax: {
-          url: '/api/ac/tag',
-          dataType: 'json',
-          data: function (term) {
-            return {
-              type: 'location',
-              q: term
-            };
-          },
-          results: function (data) {
-            return { results: data }
-          }
-        }
-      });
       self.$(".el-specific-location").hide();
 
       // ------------------------------ //
@@ -245,11 +223,10 @@ define([
         data: '',
         el: ".markdown-edit",
         id: 'task-description',
-        placeholder: 'Description of opportunity including goals, expected outcomes and deliverables.',
-        title: 'Opportunity Description',
+        placeholder: 'Description of ' + i18n.t('task') + ' including goals, expected outcomes and deliverables.',
+        title: i18n.t('Task') + ' Description',
         rows: 6,
-        maxlength: 1000,
-        validate: ['empty', 'count1000']
+        validate: ['empty']
       }).render();
     },
 

@@ -30,16 +30,14 @@ module.exports = {
         audience: {
           'taskOwners': {
             fields: {
-                taskId: values.taskId
-            },
-            strategy: {
-              'contactTaskOwnersOnVolunteerEmail': {
-                preflight: {
-                  'taskVolunteerOwnerPrepare': {
-                    fields: { volunteerId: values.userId }
-                  }
-                }
-              }
+                taskId: values.taskId,
+                volunteerId: values.userId
+            }
+          },
+          'volunteerSupervisor': {
+            fields: {
+              taskId: values.taskId,
+              volunteerId: values.userId
             }
           }
         }
