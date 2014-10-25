@@ -34,6 +34,7 @@ define([
         hostname: window.location.hostname,
         user: window.cache.currentUser || {},
       };
+      data.ui = UIConfig;
 
       this.$el.addClass('home');
       compiledTemplate = _.template(HomeTemplate, data);

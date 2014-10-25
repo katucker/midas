@@ -2,9 +2,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'i18n',
   'utilities',
   'text!about_template'
-], function ($, _, Backbone, utils, AboutTemplate) {
+], function ($, _, Backbone, i18n, utils, AboutTemplate) {
 
   var AboutView = Backbone.View.extend({
 
@@ -23,6 +24,7 @@ define([
       };
       var compiledTemplate = _.template(AboutTemplate, options);
       this.$el.html(compiledTemplate);
+      this.$el.i18n();
     },
 
     goLogin: function (e) {

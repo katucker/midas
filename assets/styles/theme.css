@@ -1,9 +1,177 @@
+/* HHS CSS */
+
+.lead {
+        font-size: 18px;
+        font-weight: 400;
+}
+
+.intro-header {
+		margin-top:-20px;
+        color: #f8f8f8;
+        background: url(/images/BannerImage.png) no-repeat center center;
+        background-size: cover;
+        text-align: center;
+		margin-bottom:20px;
+}
+
+.intro-message {
+        position: relative;
+        padding-top: 10%;
+        padding-bottom: 10%;
+}
+
+.intro-message > h1 {
+        margin: 0;
+        font-size: 3em;
+        text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+}
+
+.intro-divider {
+        width: 400px;
+        border-top: 1px solid #f8f8f8;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.intro-message > h3 {
+        text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 767px) {
+        .intro-message {
+                padding-bottom: 15%;
+        }
+
+        .intro-message > h1 {
+                font-size: 3em;
+        }
+
+        ul.intro-social-buttons > li {
+                display: block;
+                margin-bottom: 20px;
+                padding: 0;
+        }
+
+        ul.intro-social-buttons > li:last-child {
+                margin-bottom: 0;
+        }
+
+        .intro-divider {
+                width: 100%;
+        }
+}
+
+.network-name {
+        text-transform: uppercase;
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: 2px;
+		color:antiquewhite;
+}
+
+.content-section-a {
+        background-color: #f8f8f8;
+        padding: 50px 0;
+}
+
+.content-section-b {
+        border-top: 1px solid #e7e7e7;
+        border-bottom: 1px solid #e7e7e7;
+        padding: 50px 0;
+}
+
+.section-heading {
+        margin-bottom: 30px;
+}
+
+.section-heading-spacer {
+        border-top: 3px solid #e7e7e7;
+        width: 200px;
+        float: left;
+}
+
+.banner {
+        padding: 100px 0;
+        color: #f8f8f8;
+        background: url/images/BannerImage.png) no-repeat center center;
+        background-size: cover;
+}
+
+.banner h2 {
+        margin: 0;
+        text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+        font-size: 3em;
+}
+
+.banner ul {
+        margin-bottom: 0;
+}
+
+.banner-social-buttons {
+        float: right;
+        margin-top: 0;
+}
+
+@media (max-width: 1199px) {
+        ul.banner-social-buttons {
+                float: left;
+                margin-top: 15px;
+        }
+}
+
+@media (max-width: 767px) {
+        .banner h2 {
+                margin: 0;
+                text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+                font-size: 3em;
+        }
+
+        ul.banner-social-buttons > li {
+                display: block;
+                margin-bottom: 20px;
+                padding: 0;
+        }
+
+        ul.banner-social-buttons > li:last-child {
+                margin-bottom: 0;
+        }
+}
+
+footer {
+	margin: 50px 0;
+	padding: 50px 0;
+}
+.terms {
+width: 100%;
+height: 300px;
+border: 1px solid #ccc;
+background: #f2f2f2;
+padding: 6px;
+overflow: scroll;
+}
+
+#footer ul li {
+  display:inline;
+  padding:25px;
+  text-align:center;
+  font-size:15px;
+}
+
+#footer p {
+  text-align:center;
+  font-size:15px;
+}
+
+/*h3 {
+background: #F04F24 ;
+font-weight:bold;
+font-color:black;
+}*/
 /**
  * HEADERS
  */
 h1 {
   font-size: 48px;
-  color: #dd361a;
+  color: #F04F24;
 }
 
 h2 {
@@ -21,11 +189,11 @@ h3 {
   padding-bottom: 10px;
   padding-left: 10px;
   font-size: 21px;
-  background-color: #B72467;
+/*  background-color: #B72467;*/
 }
 
 h4 {
-  color: #dd361a;
+  color: #F04F24;
   font-size: 18px;
   font-weight: 700;
 }
@@ -40,22 +208,8 @@ h6 {
   font-size: 10px;
 }
 
-/**
- * For 508 compliance
- */
-a {
-  color: #317ab9;
-}
-
-footer a {
-  color: #216aa9;
-}
-
-/**
- * Borders
- */
 .border-left {
-  border-color: #dd361a;
+  border-color: #F04F24;
 }
 
 /**
@@ -77,15 +231,15 @@ footer a {
 }
 
 .c1 {
-  color: #dd361a;
+  color: #F04F24;
 }
 
 .c1-border {
-  border-color: #dd361a;
+  border-color: #F04F24;
 }
 
 .c1-bg {
-  background-color: #dd361a;
+  background-color: #F04F24;
 }
 
 .c2 {
@@ -177,8 +331,10 @@ footer a {
 }
 
 .btn-c1 {
-  background-color: #dd361a;
+  background-color: #F24024;
   color: #fff;
+  cursor;
+  auto;
 }
 
 .btn-c1:active,
@@ -190,20 +346,15 @@ footer a {
 
 .btn-c1:hover,
 .btn-c1.hover {
-  background-color: #E74024;
+  background-color: #D63A25;
   color: #fff;
   /*border-color: #007D3D;*/
   /*color: #007D3D;*/
 }
 
-.nav > li > a:hover.btn-c1, .nav > li > a:focus.btn-c1 {
-  background-color: #D63A25;
-}
-
 .btn-c2 {
-  background-color: #007eb1;
+  background-color: #39B7EA;
   color: #fff;
-  font-weight: bold;
 }
 
 .btn-c2:active,
@@ -215,14 +366,10 @@ footer a {
 
 .btn-c2:hover,
 .btn-c2.hover {
-  background-color: #39B7EA;
+  background-color: #297BB5;
   color: #fff;
   /*border-color: #BE471B;*/
   /*color: #BE471B;*/
-}
-
-.nav > li > a:hover.btn-c2, .nav > li > a:focus.btn-c2 {
-  background-color: #297BB5;
 }
 
 .btn-default {
@@ -337,7 +484,7 @@ footer a {
   background-color: #D63A25;
 }
 
-.navigation .navbar-brand {
+.navbar-brand {
   background-image: url(/images/logo.png);
   background-repeat: no-repeat;
   background-size: 256px 40px;
@@ -350,7 +497,7 @@ footer a {
   only screen and (-o-min-device-pixel-ratio: 3/2),
   only screen and (-webkit-min-device-pixel-ratio: 1.5),
   only screen and (min-device-pixel-ratio: 1.5),
-  only screen and (min-resolution: 144dppx) {
+  only screen and (min-resolution: 144dpi) {
     .navbar-brand {
          background-image: url(/images/logo@2x.png);
     }
@@ -363,7 +510,7 @@ footer a {
 }
 
 .navbar-default .navbar-brand {
-  color: #dd361a;
+  color: #e74024;
 }
 
 .navbar-default .navbar-brand:hover,
@@ -373,17 +520,17 @@ footer a {
 }
 
 .navbar-default .navbar-text {
-  color: #dd361a;
+  color: #e74024;
 }
 
 .navbar-default .navbar-nav > li > a {
-  color: #dd361a;
+  color: #e74024;
   text-shadow: none;
 }
 
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
-  color: #dd361a;
+  color: #e74024;
   background-color: transparent;
 }
 
@@ -400,7 +547,7 @@ footer a {
 }
 
 .navbar .nav .divider-vertical {
-  background-color: #dd361a;
+  background-color: #e74024;
 }
 .navbar-brand,
 .navbar-nav > li > a {
@@ -601,4 +748,8 @@ footer a {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe8e8e8', endColorstr='#fff5f5f5', GradientType=0);
   -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1);
           box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.row-top-padded {
+	padding-top:50px
 }
