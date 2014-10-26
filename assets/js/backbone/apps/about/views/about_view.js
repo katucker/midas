@@ -3,9 +3,10 @@ define([
   'underscore',
   'backbone',
   'i18n',
+  'json!ui_config',
   'utilities',
   'text!about_template'
-], function ($, _, Backbone, i18n, utils, AboutTemplate) {
+], function ($, _, Backbone, i18n, UIConfig, utils, AboutTemplate) {
 
   var AboutView = Backbone.View.extend({
 
@@ -19,10 +20,11 @@ define([
 
     render: function () {
       var self = this;
-      var options = {
+      var data = {
         user: window.cache.currentUser
       };
-      var compiledTemplate = _.template(AboutTemplate, options);
+      data.ui = UIConfig;
+      var compiledTemplate = _.template(AboutTemplate, data);
       this.$el.html(compiledTemplate);
       this.$el.i18n();
     },

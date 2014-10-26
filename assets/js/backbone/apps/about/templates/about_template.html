@@ -13,36 +13,61 @@ h1, h2, h3, h4, h5 {
 
 <h3 data-i18n="about.how.header">How does it work?</h3>
 
-<p data-i18n="about.how.content">$t(app.name) allows staff to post small tasks ($t(Task_plural_indefinite)) for other staff to complete. Do you have a hundred little things on your to-do list that you can’t seem to get to? Post them as $t(Task_plural_indefinite) to this site: Describe the skillets required, the estimated time it’ll take for someone to complete them, and other information relevant to completing the tasks.
+<p data-i18n="about.how.content.p1">
+$t(app.name) allows staff to post small tasks ($t(task_plural)) for other staff to complete. Do you have a hundred little things on your to-do list that you can’t seem to get to? Post them as $t(task_plural) to this site: Describe the skillets required, the estimated time it’ll take for someone to complete them, and other information relevant to completing the tasks.
+</p>
+<p data-i18n="about.how.content.p2">
 Maybe you seek a specific expertise, such as that related to 508 compliance or security. Or maybe you just need someone to transcribe a video or take notes during a conference call.
-But it is called $t(app.name) for a reason, if you post $t(Task_plural_indefinite) for others, you should also consider completing those posted by others. Have a slow Thursday afternoon? Search for $t(Task_plural_indefinite) that can be completed in an hour. Looking to expand your horizons and have the bandwidth to take on a longer-term effort? Find $t(Task_plural_indefinite) that are more complex or nuanced in nature. Or find $t(Project_indefinite) that interests you and follow along.</p>
+</p>
+<p data-i18n="about.how.content.p3">
+But it is called $t(app.name) for a reason, if you post $t(task_plural_indefinite) for others, you should also consider completing those posted by others. Have a slow Thursday afternoon? Search for $t(task_plural_indefinite) that can be completed in an hour. Looking to expand your horizons and have the bandwidth to take on a longer-term effort? Find $t(task_plural) that are more complex or nuanced in nature.</p>
 
 <h3 data-i18n="about.why.header">Why is it in “Beta”?  </h3>
 
-<p data-i18n="about.why.content">We released this tool early as an unfinished product (“beta”) intentionally. We think there’s a need for a platform like this, but frankly we’re not sure exactly how (and even if) this will work.   For example, we note overlaps with Yammer and other collaboration tools.
-
+<p data-i18n="about.why.content.p1">
+We released this tool early as an unfinished product (“beta”) intentionally. We think there’s a need for a platform like this, but frankly we’re not sure exactly how (and even if) this will work.   For example, we note overlaps with Yammer and other collaboration tools.
+</p>
+<p data-i18n="about.why.content.p2">
 We didn't want to put forth too many resources for a final product only to find that it's not very useful to staff.  We are looking for beta testers. Please reach out to Read.Holman@hhs.gov if you are interested in helping explore this area.</p>
 
-<h3 data-i18n="about.scope.header">What kinds of $t(Task_plural_indefinite) can I post or find on the site? </h3>
+<h3 data-i18n="about.scope.header">What kinds of $t(task_plural) can I post or find on the site? </h3>
 
-<p data-i18n="about.scope.content">Users can post all kinds of things for others to complete, from the very short and mundane tasks that can be completed in under an hour to the complex and critical tasks that are ongoing over the course of several months.
+<p data-i18n="about.scope.content.p1">
+Users can post all kinds of things for others to complete, from the very short and mundane tasks that can be completed in under an hour to the complex and critical tasks that are ongoing over the course of several months.
+</p>
+<p data-i18n="about.scope.content.p2">
+Here are a few specific examples:
+</p>
+<ul>
+<li data-i18n="about.scope.content.b1">Example 1</li>
+<li data-i18n="about.scope.content.b2">Example 2</li>
+<li data-i18n="about.scope.content.b3">Example 3</li>
+<li data-i18n="about.scope.content.b4">Example 4</li>
+<li data-i18n="about.scope.content.b5">Example 5</li>
+<li data-i18n="about.scope.content.b6">Example 6</li>
+<li data-i18n="about.scope.content.b7">Example 7</li>
+</ul>
+</p>
 
-Here are a few specific examples: Providing subject matter expertise and guidance; Testing a new tool or application; Participating on a task force; Borrowing a camera; Transcribing a video or speech; Conducting research; Designing a flyer.</p>
+<% if (ui.project.show) { %>
+<h3 data-i18n="about.glossary.header">What is the difference between $t(project_indefinite) and $t(task_indefinite)? </h3>
 
-<h3 data-i18n="about.glossary.header">What is the difference between $t(Project_indefinite) and $t(Task_indefinite)? </h3>
-
-<p data-i18n="about.glossary.overview">In short: $t(Task_plural_indefinite) are things to be done. $t(Project_plural_indefinite) are collections of $t(Task_plural_indefinite). Here is a larger glossary that spells it out a bit further:</p>
+<p data-i18n="about.glossary.overview">In short: $t(task_plural) are things to be done and $t(project_plural) are collections of $t(task_plural). Here is a larger glossary that spells it out a bit further:</p>
 
 <ul>
-	<li><strong><span data-i18n="A_Task">A Task</span></strong><span data-i18n="about.glossary.task.definition"> is a specific task or activity requesting resources and/or task completion. $t(Task_plural_indefinite) are posted by people that are seeking resources. $t(Task_plural_indefinite) get completed by users that can meet that need. Typically, once $t(Task_indefinite) gets posted, it doesn’t change much until it has been assigned to someone, after which the $t(Task) is no longer available.</span></li>
-	<li><strong><span data-i18n="A_Project">A Project</span></strong><span data-i18n="about.glossary.project.definition"> is a workspace for communicating and coordinating multiple $t(Task_plural_indefinite) related to a larger effort. $t(Project_plural_indefinite) tend to be longer-lived than $t(Task_plural_indefinite) and get updated over the life-span of the effort.</span></li>
-	<li><strong><span data-i18n="A_Task_Owner">A Task Owner</span></strong><span data-i18n="about.glossary.task.owner"> creates a specific $t(Task) in need of resources and has the ability to edit the $t(Task).</span></li>
-	<li><strong><span data-i18n="A_Project_Owner">A Project Owner</span></strong><span data-i18n="about.glossary.project.owner"> creates the $t(Project) and has the ability to edit and close the $t(Project) when all activities and $t(Task_plural_indefinite) are completed.</span></li>
+	<li>A <strong><span data-i18n="task">Task</span></strong><span data-i18n="about.glossary.task.definition"> is a specific task or activity requesting resources and/or task completion.</span></li>
+	<li>A <strong><span data-i18n="project">Project</span></strong><span data-i18n="about.glossary.project.definition"> is a workspace for communicating and coordinating multiple $t(task_plural) related to a larger effort.</span></li>
+	<li>A <strong><span data-i18n="taskOwner">Task Owner</span></strong><span data-i18n="about.glossary.task.owner"> creates a specific $t(task) in need of resources and has the ability to edit the $t(task).</span></li>
+	<li>A <strong><span data-i18n="projectOwner">Project Owner</span></strong><span data-i18n="about.glossary.project.owner"> creates the $t(project) and has the ability to edit and close the $t(project) when all activities and $t(task_plural) are completed.</span></li>
 </ul>
+<% } %>
 
 <h3 data-i18n="about.who.header">Who is the platform for?</h3>
 
-<p data-i18n="about.who.content">This is for staff looking for new ways to get things done. Some staff have a lot of items on their to-do list, things that can be posted to $t(app.name) for others to complete. Others have fewer things on their to-do list or have skill sets and interests that can go beyond their particular office.
+<p data-i18n="about.who.content.p1">
+This is for staff looking for new ways to get things done. Some staff have a lot of items on their to-do list, things that can be posted to $t(app.name) for others to complete. Others have fewer things on their to-do list or have skill sets and interests that can go beyond their particular office.
+</p>
+<p data-i18n="about.who.content.p2">
 Staff participating should have the approval of their Supervisors. Contractors are not able to participate. You have to be on the $t(org.acronym) network in order to access the platform.
 </p>
 
@@ -51,23 +76,33 @@ Staff participating should have the approval of their Supervisors. Contractors a
 <% if (user) { %>
 <p>
   <span data-i18n="about.start.log.content.p1">Browse the </span>
-  <a href="/projects" data-i18n="Project_plural">Projects</a>
+  <% if (ui.project.show) { %>
+  <a href="/projects" data-i18n="project_plural">Projects</a>
   <span data-i18n="about.start.log.content.p2"> or </span>
-  <a href="/tasks" data-i18n="Task_plural">Tasks</a>
+  <% } %>
+  <a href="/tasks" data-i18n="task_plural">Tasks</a>
   <span data-i18n="about.start.log.content.p3"> already posted, and either contribute to the discussion of the ones that interest you or volunteer to help.</span>
 </p>
 <p>
-  <span data-i18n="about.start.log.content.p4">Post your own $t(Task) or start your own longer-term $t(Project).</span>
+  <span data-i18n="about.start.log.content.p4">Post your own $t(task)</span>
+<% if (ui.project.show) { %>
+  <span data-i18n="about.start.log.content.p4b"> or start your own longer-term $t(project)</span>
+<% } %>
+.
 </p>
 <p>
   <span data-i18n="about.start.log.content.p5">Edit your </span>
-  <a href="/profile" data-i18n="Profile">Profile</a>
+  <a href="/profile" data-i18n="profile">profile</a>
   <span data-i18n="about.start.log.content.p6"> to add contact information, select the skills you want others to know you have or the topics that interest you.</span>
 </p>
 <% } else { %>
 <p>
-  <span data-i18n="about.start.nolog.content.p1">You must be logged in to a user account to post or join $t(Project_plural_indefinite) and $t(Task_plural_indefinite).</span>
-  <a href="/auth" class="login" data-i18n="login_or_register">Log in or Register here.</a>
+  <span data-i18n="about.start.nolog.content.p1">You must be logged in to a user account to post or join </span>
+<% if (ui.project.show) { %>
+  <span data-i18n="about.start.nolog.content.p1b">$t(project_plural) or </span>
+<% } %>
+  <span data-i18n="about.start.nolog.content.p1c">$t(task_plural).</span>
+  <a href="/auth" class="login" data-i18n="loginOrRegister">Log in or Register here.</a>
 </p>
 <% } %>
 
