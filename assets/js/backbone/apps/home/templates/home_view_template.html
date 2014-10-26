@@ -1,10 +1,24 @@
-  <div class="container-fluid padding-left-none padding-right-none" id="home">
-    <div class="splash-wrap" id="splash1">
-      <div class="splash-center">
-      <h1 class="text-center" data-i18n="home.headline">Hassle Free Collaboration</h1>
-      <p class="lead text-center" data-i18n="home.subhead">Work with other federal employees on projects you are passionate about.</p>
-      <div class="text-center"><a class="login" href="/auth"><button class="btn btn-midas" id="center" data-i18n="home.callToAction">Get Started Today</button></a></div>
-      <div class="text-center text-on-dark text-muted"><a href="#">Learn More</a></div>
-    </div><!-- /#splash -->
-    </div><!-- /.splash-wrap -->
-  </div><!-- /.container-fluid-->
+<div class="intro-header">
+
+  <div class="container">
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="intro-message">
+          <h1>HHS FairTrade(Beta)</h1>
+          <hr class="intro-divider">
+		  <h3>Facilitating the Exchange of Ideas and Opportunities </h3>
+          <ul class="list-inline intro-social-buttons">
+            <li><a class="btn btn-lg btn-c1" href="/tasks"> <span class="network-name">Post Opportunities for Others to Complete</span></a></li>
+        <% if (ui.project.show) { %>
+            <li><a class="btn btn-lg btn-c1" href="/projects"> <span class="network-name">Collaborate on Long Term Projects</span></a></li>
+        <% } %>
+            <li><a class="btn btn-lg btn-c1" href="/about"> <span class="network-name">Learn More</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.container -->
+
+</div><!-- /.intro-header -->

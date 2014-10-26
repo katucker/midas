@@ -1,9 +1,9 @@
 {
   "resGetPath"      : "/locales/__lng__/__ns__.json",
 
-  "lng"             : "en-US",
+  "lng"             : "en-US_HHS",
 
-  "fallbackLng"     : "en",
+  "fallbackLng"     : ["en-US","en"],
 
   "useLocalStorage" : false,
 

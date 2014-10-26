@@ -1,0 +1,114 @@
+#!/bin/sh
+#
+# fairtrade     This script controls the Fair Trade application.
+#
+# Copy this to the home directory of the account from which Fair Trade will run.
+
+# Version 1.0.0 Keith Tucker <keith.tucker@hhs.gov>
+
+#Source the same functions used in init scripts.
+. /etc/rc.d/init.d/functions
+
+# Set defaults for configuration variables
+LOGDIR=/home/fairtrade/log
+SRCDIR=/home/fairtrade/midas
+SCRIPT=app.js
+FTLOG=$LOGDIR/fairtrade.log
+FTOUT=$LOGDIR/fairtrade.out.log
+FTERR=$LOGDIR/fairtrade.err.log
+
+pidfile="/home/fairtrade/fairtrade.pid"
+
+UP=1000
+SPIN=2000
+
+export NODE_PATH=$NODE_PATH:$SRCDIR/node_modules
+
+# If the script to control doesn't exist, quit without doing anything.
+[ -f "$SRCDIR/$SCRIPT" ] || exit 1
+
+#Assume success
+script_result=0
+
+start(){
+    # Create log directory, if needed.
+    [ -d $LOGDIR ] || mkdir $LOGDIR
+
+    FT_START=$"Starting fairtrade service: "
+
+    # Check whether the fairtade service is actually running.
+    status -p $pidfile >/dev/null 2>&1
+    running=$?
+
+    # Remove any dead pid file in case the application did not shut down cleanly.
+    [ $running -eq 1 ] && rm -f $pidfile
+
+    # If the process ID file still exists, the application must already be running properly.
+    # Otherwise, actually start the application with the forever utility.
+    if [ ! -f $pidfile ]
+    then
+        echo -n "$FT_START"
+        cd $SRCDIR
+        forever start -l $FTLOG -o "$FTOUT" -e "$FTERR" \
+            --pidFile $pidfile -a -s --minUptime $UP --spinSleepTime $SPIN \
+            --sourceDir $SRCDIR $SCRIPT --prod
+        script_result=$?
+        if [ $script_result -eq 0 ]
+        then
+            success "$FT_START"
+        else
+            failure "$FT_START"
+        fi
+    fi
+    echo
+}
+
+stop(){
+    FT_STOP=$"Stopping fairtrade service: "
+    echo -n "$FT_STOP"
+
+	if [ -f $pidfile ]
+	then
+		cd $SRCDIR
+		forever stop $SCRIPT --prod
+		script_result=$?
+		if [ $script_result -eq 0 ]
+		then
+			success "$FT_STOP"
+			rm -f "$pidfile"
+		else
+			failure "$FT_STOP"
+		fi
+	else
+		# not running; per LSB standards this is "ok"
+		success "$FT_STOP"
+    fi
+    echo
+}
+
+restart(){
+    stop
+    start
+}
+
+# See how we were called.
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  status)
+	status -p $pidfile
+	script_result=$?
+	;;
+  restart)
+	restart
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|status|restart}"
+	exit 2
+esac
+
+exit $script_result
