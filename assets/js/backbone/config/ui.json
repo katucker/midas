@@ -7,7 +7,7 @@
   },
   "home": {
     "logged_in_path": "/tasks"
-  }
+  },
   "browse": {
     "pageSize" : 27,
     "useInfiniteScroll" : false
